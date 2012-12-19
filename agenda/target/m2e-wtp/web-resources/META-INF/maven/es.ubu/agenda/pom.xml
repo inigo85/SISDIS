@@ -9,7 +9,15 @@
     <name>${project.artifactId}</name>
     <description>A simple project with war packaging that depends on JSF 2.1 and 
         javaee 6, in that order.</description>
-    <url>http://jsf-spec.java.net/</url>
+    <url>http://jsf-spec.java.net/</url>  
+    <repositories>
+            <repository>
+		<id>prime-repo</id>
+		<name>PrimeFaces Maven Repository</name>
+		<url>http://repository.primefaces.org</url>
+		<layout>default</layout>
+	</repository>
+    </repositories>
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -42,5 +50,10 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+	<groupId>org.primefaces</groupId>
+	<artifactId>primefaces</artifactId>
+	<version>3.4.2</version>
+</dependency>
     </dependencies>
 </project>
