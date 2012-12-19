@@ -10,9 +10,6 @@
     <description>A simple project with war packaging that depends on JSF 2.1 and 
         javaee 6, in that order.</description>
     <url>http://jsf-spec.java.net/</url>
-     <properties>
-        <org.richfaces.bom.version>4.1.0.Final</org.richfaces.bom.version>
-    </properties>
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -36,6 +33,7 @@
         <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>javax.faces-api</artifactId>
+            <version>2.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -44,24 +42,5 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-        <groupId>org.richfaces.ui</groupId>
-        <artifactId>richfaces-components-ui</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.richfaces.core</groupId>
-        <artifactId>richfaces-core-impl</artifactId>
-    </dependency>
     </dependencies>
-        <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.richfaces</groupId>
-                <artifactId>richfaces-bom</artifactId>
-                <version>${org.richfaces.bom.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>
