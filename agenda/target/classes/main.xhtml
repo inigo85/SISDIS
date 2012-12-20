@@ -10,28 +10,137 @@
 	<p:layout fullPage="true">
 
 
-		<p:layoutUnit position="north" size="50" header="Top"
-			resizable="true" closable="false" collapsible="true">
+		<!-- 		<p:layoutUnit position="north" size="50" resizable="true" -->
+		<!-- 			closable="false" collapsible="true"> -->
+		<!-- 		</p:layoutUnit> -->
+
+		<p:layoutUnit position="west" size="23%" resizable="true"
+			closable="false" collapsible="true">
+			<DIV align="center">
+				<h:form id="form">
+					<p:calendar value="#{calendarBean.date1}" mode="inline"
+						id="inlineCal" locale="es" />
+
+				</h:form>
+			</DIV>
+
+			<p:accordionPanel>
+				<p:tab title="Tareas próximas">
+					<h:form id="form">
+
+						<p:dataList value="#{tableBean.listaTareas}" var="tarea"
+							id="tareas" paginator="true" rows="5" effectSpeed="fast" 
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" type="none" paginatorPosition="bottom">
+
+							<f:facet name="header">
+                Tareas
+            </f:facet>
+							<p:commandButton icon="ui-icon-calendar">
+								<f:setPropertyActionListener value="#{tarea}"
+									target="#{tableBean.tareaSeleccionada}" />
+							</p:commandButton>
+
+							<h:outputText value="#{tarea.fecha_inicio}, #{tarea.nombre}"
+								style="margin-left:10px" />
+							<br />
+						</p:dataList>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
+
+
 		</p:layoutUnit>
 
-		<p:layoutUnit position="west" size="25%" header="Left"
-			resizable="true" closable="false" collapsible="true" >
-			<DIV align="center" >
-			<h:form id="form" >
-				<p:calendar value="#{calendarBean.date1}" mode="inline"
-					id="inlineCal" />
+		<p:layoutUnit position="center" size="77%">
+		<DIV align="center">
+			<h:form>
+
+				<p:growl id="messages" showDetail="true" />
+
+				<p:schedule value="#{scheduleController.eventModel}" locale="es"
+					widgetVar="myschedule" style="width:96%;" aspectRatio="1.8">
+
+					<p:ajax event="dateSelect"
+						listener="#{scheduleController.onDateSelect}"
+						update="eventDetails" oncomplete="eventDialog.show()" />
+					<p:ajax event="eventSelect"
+						listener="#{scheduleController.onEventSelect}"
+						update="eventDetails" oncomplete="eventDialog.show()" />
+					<p:ajax event="eventMove"
+						listener="#{scheduleController.onEventMove}" update="messages" />
+					<p:ajax event="eventResize"
+						listener="#{scheduleController.onEventResize}" update="messages" />
+
+				</p:schedule>
+
+				<p:dialog widgetVar="eventDialog" header="Event Details"
+					showEffect="clip" hideEffect="clip">
+					<h:panelGrid id="eventDetails" columns="2">
+						<h:outputLabel for="title" value="Title:" />
+						<p:inputText id="title" value="#{scheduleController.event.title}"
+							required="true" />
+
+						<h:outputLabel for="from" value="From:" />
+						<p:inputMask id="from"
+							value="#{scheduleController.event.startDate}" mask="99/99/9999">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputMask>
+
+						<h:outputLabel for="to" value="To:" />
+						<p:inputMask id="to" value="#{scheduleController.event.endDate}"
+							mask="99/99/9999">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputMask>
+
+						<h:outputLabel for="allDay" value="All Day:" />
+						<h:selectBooleanCheckbox id="allDay"
+							value="#{scheduleController.event.allDay}" />
+
+						<p:commandButton type="reset" value="Reset" />
+						<p:commandButton value="Save"
+							actionListener="#{scheduleController.addEvent}"
+							oncomplete="myschedule.update();eventDialog.hide();" />
+					</h:panelGrid>
+				</p:dialog>
 
 			</h:form>
 			</DIV>
-		</p:layoutUnit>
 
-		<p:layoutUnit position="center" size="75%">
-			<h:form>  
-              
-  
-        </h:form>
 		</p:layoutUnit>
 	</p:layout>
+
+	<SCRIPT type="text/javascript">
+		PrimeFaces.locales['es'] = {
+			closeText : 'Cerrar',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</SCRIPT>
 </h:body>
 </html>
-
