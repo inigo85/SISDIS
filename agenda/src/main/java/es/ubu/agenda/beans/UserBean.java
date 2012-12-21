@@ -27,7 +27,19 @@ public class UserBean {
 	 */
 	private String password;
 	
+	private int id;
 	
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
 	private HttpSession session = null;
 	
 
@@ -92,9 +104,12 @@ public class UserBean {
 
 	public String obtainLogin() throws NamingException{
 		Fachada fachada=Fachada.getInstance();
-		System.out.print(getLogin()+getPassword());
-		if(fachada.login(login, password))
+		int idUsuario;
+		idUsuario=fachada.login(login, password);
+		if(fachada.login(login, password)!=-1){
+		  setId(idUsuario);
 		  return "ok";
+		}
 		return "failed";
 	}
 	

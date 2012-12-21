@@ -8,7 +8,7 @@
 </h:head>
 <h:body>
 	<p:layout fullPage="true">
-
+	
 
 		<!-- 		<p:layoutUnit position="north" size="50" resizable="true" -->
 		<!-- 			closable="false" collapsible="true"> -->
@@ -16,36 +16,36 @@
 
 		<p:layoutUnit position="west" size="23%" resizable="true"
 			closable="false" collapsible="true">
-			<DIV align="center">
-				<h:form id="form">
-					<p:calendar value="#{calendarBean.date1}" mode="inline"
-						id="inlineCal" locale="es" />
+			<!-- 			<DIV align="center"> -->
+			<!-- 				<h:form id="form"> -->
+			<!-- 					<p:calendar value="#{calendarBean.date1}" mode="inline" -->
+			<!-- 						id="inlineCal" locale="es" style="width:16%;" aspectRatio="1.8"/> -->
 
-				</h:form>
-			</DIV>
+			<!-- 				</h:form> -->
+			<!-- 			</DIV> -->
 
 			<p:accordionPanel>
 				<p:tab title="Tareas próximas">
-					<h:form id="form">
+						<h:form id="form" style="width:130%;margin-left:-15%">
+							<p:dataList value="#{tableBean.listaTareas}" var="tarea"
+								id="tareas" paginator="true" rows="5" effectSpeed="fast"
+								paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" type="none"
+								paginatorPosition="bottom">
 
-						<p:dataList value="#{tableBean.listaTareas}" var="tarea"
-							id="tareas" paginator="true" rows="5" effectSpeed="fast" 
-							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
-							rowsPerPageTemplate="5,10,15" type="none" paginatorPosition="bottom">
+								<!-- 							<f:facet name="header"> -->
+								<!--                 Tareas -->
+								<!--             </f:facet> -->
+								<p:commandButton icon="ui-icon-calendar" style="width:10%;height:4%">
+									<f:setPropertyActionListener value="#{tarea}"
+										target="#{tableBean.tareaSeleccionada}" />
+								</p:commandButton>
 
-							<f:facet name="header">
-                Tareas
-            </f:facet>
-							<p:commandButton icon="ui-icon-calendar">
-								<f:setPropertyActionListener value="#{tarea}"
-									target="#{tableBean.tareaSeleccionada}" />
-							</p:commandButton>
-
-							<h:outputText value="#{tarea.fecha_inicio}, #{tarea.nombre}"
-								style="margin-left:10px" />
-							<br />
-						</p:dataList>
-					</h:form>
+								<h:outputText value="#{tarea.fecha_inicio}, #{tarea.nombre}"
+									style="margin-left:2px;font-size:80%" />
+								<br />
+							</p:dataList>
+						</h:form>
 				</p:tab>
 			</p:accordionPanel>
 
@@ -53,63 +53,62 @@
 		</p:layoutUnit>
 
 		<p:layoutUnit position="center" size="77%">
-		<DIV align="center">
-			<h:form>
+			<DIV align="center">
+				<h:form>
 
-				<p:growl id="messages" showDetail="true" />
+					<p:growl id="messages" showDetail="true" />
 
-				<p:schedule value="#{scheduleController.eventModel}" locale="es"
-					widgetVar="myschedule" style="width:96%;" aspectRatio="1.8">
+					<p:schedule value="#{scheduleController.eventModel}" locale="es"
+						widgetVar="myschedule" style="width:96%;" aspectRatio="1.8">
 
-					<p:ajax event="dateSelect"
-						listener="#{scheduleController.onDateSelect}"
-						update="eventDetails" oncomplete="eventDialog.show()" />
-					<p:ajax event="eventSelect"
-						listener="#{scheduleController.onEventSelect}"
-						update="eventDetails" oncomplete="eventDialog.show()" />
-					<p:ajax event="eventMove"
-						listener="#{scheduleController.onEventMove}" update="messages" />
-					<p:ajax event="eventResize"
-						listener="#{scheduleController.onEventResize}" update="messages" />
+						<p:ajax event="dateSelect"
+							listener="#{scheduleController.onDateSelect}"
+							update="eventDetails" oncomplete="eventDialog.show()" />
+						<p:ajax event="eventSelect"
+							listener="#{scheduleController.onEventSelect}"
+							update="eventDetails" oncomplete="eventDialog.show()" />
+						<p:ajax event="eventMove"
+							listener="#{scheduleController.onEventMove}" update="messages" />
+						<p:ajax event="eventResize"
+							listener="#{scheduleController.onEventResize}" update="messages" />
 
-				</p:schedule>
+					</p:schedule>
 
-				<p:dialog widgetVar="eventDialog" header="Event Details"
-					showEffect="clip" hideEffect="clip">
-					<h:panelGrid id="eventDetails" columns="2">
-						<h:outputLabel for="title" value="Title:" />
-						<p:inputText id="title" value="#{scheduleController.event.title}"
-							required="true" />
+					<p:dialog widgetVar="eventDialog" header="Event Details"
+						showEffect="clip" hideEffect="clip">
+						<h:panelGrid id="eventDetails" columns="2">
+							<h:outputLabel for="nombre" value="Nombre:" />
+							<p:inputText id="nombre" value="#{scheduleController.event.title}"
+								required="true" />
 
-						<h:outputLabel for="from" value="From:" />
-						<p:inputMask id="from"
-							value="#{scheduleController.event.startDate}" mask="99/99/9999">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</p:inputMask>
+							<h:outputLabel for="desde" value="Desde:" />
+							<p:calendar id="desde" effect="slideDown" value="#{scheduleController.event.startDate}"/>
 
-						<h:outputLabel for="to" value="To:" />
-						<p:inputMask id="to" value="#{scheduleController.event.endDate}"
-							mask="99/99/9999">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</p:inputMask>
+							<h:outputLabel for="hasta" value="Hasta:" />
+							<p:calendar id="hasta" effect="slideDown" value="#{scheduleController.event.endDate}"/>
 
-						<h:outputLabel for="allDay" value="All Day:" />
-						<h:selectBooleanCheckbox id="allDay"
-							value="#{scheduleController.event.allDay}" />
+							<h:outputLabel for="descripción" value="Descripción:" />	
+							<p:inputTextarea id="descripción" rows="4" cols="23" value="#{scheduleController.descripción}"/>
+							<h:outputLabel for="allDay" value="Todo el día" />
+							<h:selectBooleanCheckbox id="allDay"
+								value="#{scheduleController.event.allDay}" />
+							<p:commandButton type="reset" value="Cancelar" />
+							<p:commandButton value="Guardar"
+								actionListener="#{scheduleController.addEvent}"
+								oncomplete="myschedule.update();eventDialog.hide();" />
+						</h:panelGrid>
+					</p:dialog>
 
-						<p:commandButton type="reset" value="Reset" />
-						<p:commandButton value="Save"
-							actionListener="#{scheduleController.addEvent}"
-							oncomplete="myschedule.update();eventDialog.hide();" />
-					</h:panelGrid>
-				</p:dialog>
-
-			</h:form>
+				</h:form>
 			</DIV>
 
 		</p:layoutUnit>
 	</p:layout>
-
+	<style type="text/css">
+		.ui-dataList .ui-paginator{
+			font-size: 80%;
+		}
+	</style>
 	<SCRIPT type="text/javascript">
 		PrimeFaces.locales['es'] = {
 			closeText : 'Cerrar',

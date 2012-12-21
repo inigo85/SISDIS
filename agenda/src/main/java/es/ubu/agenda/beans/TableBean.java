@@ -17,7 +17,7 @@ public class TableBean {
 	
 	public TableBean() throws NamingException{
 		fachada=Fachada.getInstance();
-		listaTareas=fachada.obenerTareas(1, 23);
+		listaTareas=fachada.obenerTareas(Fachada.getInstance().obtenerIdUsuario(), 23);
 		
 	}
 	

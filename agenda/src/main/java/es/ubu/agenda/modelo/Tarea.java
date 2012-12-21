@@ -1,5 +1,6 @@
 package es.ubu.agenda.modelo;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Tarea {
@@ -50,6 +51,14 @@ public class Tarea {
 	public void setTodo_el_día(boolean todo_el_día) {
 		this.todo_el_día = todo_el_día;
 	}
+	
+	
+	public Timestamp obtenerFechaFormateadaInicio(){
+		return new Timestamp(fecha_inicio.getTime());
+	}
 
 
+    public Timestamp obtenerFechaFormateadaFin(){
+    	return new Timestamp(fecha_fin.getTime());
+	}
 }

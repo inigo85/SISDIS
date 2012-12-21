@@ -2,11 +2,15 @@ package es.ubu.agenda.beans;
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.naming.NamingException;
+
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -17,23 +21,56 @@ import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
+import es.ubu.agenda.modelo.Tarea;
+import es.ubu.agenda.persistencia.Fachada;
+
 public class ScheduleController {
 
 	private ScheduleModel eventModel;
 	
+	private Fachada fachada;
+	
+	public ScheduleModel getEventModel() {
+		return eventModel;
+	}
+
+	public void setEventModel(ScheduleModel eventModel) {
+		this.eventModel = eventModel;
+	}
+
 	private ScheduleModel lazyEventModel;
 
 	private ScheduleEvent event = new DefaultScheduleEvent();
 	
+	public ScheduleEvent getEvent() {
+		return event;
+	}
+
+	public void setEvent(ScheduleEvent event) {
+		this.event = event;
+	}
+
 	private String theme;
+	
+	private String descripción;
 
 	
-	public ScheduleController() {
-		eventModel = new DefaultScheduleModel();
-//		eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-//		eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-//		eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-//		eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+	public String getDescripción() {
+		return descripción;
+	}
+
+	public void setDescripción(String descripción) {
+		this.descripción = descripción;
+	}
+
+	public ScheduleController() throws NamingException {
+		eventModel = new DefaultScheduleModel() ;
+		fachada=Fachada.getInstance();
+		List<Tarea> lista=fachada.obenerTareas(fachada.obtenerIdUsuario());
+		for(Tarea tarea:lista){
+			eventModel.addEvent(new DefaultScheduleEvent(tarea.getNombre(), tarea.getFecha_inicio(), tarea.getFecha_fin()));
+		}
+
 		
 		lazyEventModel = new LazyScheduleModel() {
 			
@@ -49,12 +86,22 @@ public class ScheduleController {
 		};
 	}
 	
-	public void addEvent(ActionEvent actionEvent) {
-		if(event.getId() == null)
+	public void addEvent(ActionEvent actionEvent) throws NamingException {
+		if(event.getId() == null){
 			eventModel.addEvent(event);
+			fachada=Fachada.getInstance();
+			Tarea t=new Tarea();
+			t.setNombre(event.getTitle());
+			t.setFecha_inicio(event.getStartDate());
+			t.setFecha_fin(event.getEndDate());
+			t.setDescripción(getDescripción());
+			t.setTodo_el_día(event.isAllDay());
+			fachada.insertarTarea(t);
+		}
 		else
+		{
 			eventModel.updateEvent(event);
-		
+		}
 		event = new DefaultScheduleEvent();
 	}
 	
