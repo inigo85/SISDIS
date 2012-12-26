@@ -74,6 +74,7 @@ public class Fachada {
 			rs = st.executeQuery();
 			while (rs.next()){
 				Tarea tarea=new Tarea();
+				tarea.setId(rs.getString("id"));
 				tarea.setDescripción(rs.getString("descripcion"));
 				tarea.setNombre(rs.getString("nombre"));
 				tarea.setFecha_inicio(rs.getDate("fecha_inicio"));
@@ -104,6 +105,7 @@ public class Fachada {
 			rs = st.executeQuery();
 			while (rs.next()){
 				Tarea tarea=new Tarea();
+				tarea.setId(rs.getString("id"));
 				tarea.setDescripción(rs.getString("descripcion"));
 				tarea.setNombre(rs.getString("nombre"));
 				tarea.setFecha_inicio(rs.getTimestamp("fecha_inicio"));
@@ -119,12 +121,33 @@ public class Fachada {
 		return listaTareas;
 	}
 	
-	
-	public boolean insertarTarea(Tarea tarea){
+	public void actualizarTarea(Tarea tarea, Tarea tarea2){
 		Connection conn = null;
 		PreparedStatement st = null;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "UPDATE tarea SET nombre='"+tarea.getNombre()+"', descripcion='"+tarea.getDescripción()+"', " +
+					"fecha_inicio='"+tarea.obtenerFechaFormateadaInicio()+"', fecha_fin='"+tarea.obtenerFechaFormateadaFin()+"', " +
+							"todo_el_dia=1 WHERE nombre='"+tarea2.getNombre()+"' AND fecha_inicio='"+tarea2.obtenerFechaFormateadaInicio()+"' " +
+									"AND fecha_fin='"+tarea2.obtenerFechaFormateadaFin()+"';";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
+	}
+	
+	
+	public int insertarTarea(Tarea tarea){
+		Connection conn = null;
+		PreparedStatement st = null;
+		ResultSet rs=null;
 		boolean ok = false;
 		int idUsuario;
+		int id=-1;
 		try {
 			conn = ds.getConnection();
 			String sql;
@@ -133,12 +156,34 @@ public class Fachada {
 					tarea.obtenerFechaFormateadaInicio()+"','"+tarea.obtenerFechaFormateadaFin()+"',1,"+idUsuario+");";
 			st = conn.prepareStatement(sql);
 			ok=st.execute(sql);
+			sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='tarea';";
+			rs=st.executeQuery(sql);
+			if(rs.next())
+				id=rs.getInt("Auto_increment");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DatabaseUtil.close(conn, st);
 		}
-		return ok;
+		return id-1;
+	}
+	
+	public void eliminarEvento(Tarea tarea){
+		Connection conn = null;
+		PreparedStatement st = null;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "DELETE FROM tarea WHERE nombre='"+tarea.getNombre()+"' AND fecha_inicio='"+tarea.obtenerFechaFormateadaInicio()+"' " +
+									"AND fecha_fin='"+tarea.obtenerFechaFormateadaFin()+"';";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
 	}
 	
 	

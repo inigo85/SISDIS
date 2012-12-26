@@ -5,6 +5,15 @@ import java.util.Date;
 
 public class Tarea {
 
+	private String id;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	private String descripción;
 	private String nombre;
 	public String getNombre() {

@@ -36,9 +36,10 @@
 								<!-- 							<f:facet name="header"> -->
 								<!--                 Tareas -->
 								<!--             </f:facet> -->
-								<p:commandButton icon="ui-icon-calendar" style="width:10%;height:4%">
+								<p:commandButton icon="ui-icon-calendar" style="width:10%;height:4%"  
+								update=":Forma:calendario">
 									<f:setPropertyActionListener value="#{tarea}"
-										target="#{tableBean.tareaSeleccionada}" />
+										target="#{tableBean.tareaSeleccionada}"/>
 								</p:commandButton>
 
 								<h:outputText value="#{tarea.fecha_inicio}, #{tarea.nombre}"
@@ -54,12 +55,13 @@
 
 		<p:layoutUnit position="center" size="77%">
 			<DIV align="center">
-				<h:form>
+				<h:form id="Forma">
 
 					<p:growl id="messages" showDetail="true" />
 
-					<p:schedule value="#{scheduleController.eventModel}" locale="es"
-						widgetVar="myschedule" style="width:96%;" aspectRatio="1.8">
+					<p:schedule id="calendario" value="#{scheduleController.eventModel}" view="#{scheduleController.vistaCalendario}"
+					 locale="es" widgetVar="myschedule" style="width:96%;" aspectRatio="1.8" initialDate="#{scheduleController.fechaSeleccionada}"
+					 firstHour="#{scheduleController.hora}">
 
 						<p:ajax event="dateSelect"
 							listener="#{scheduleController.onDateSelect}"
@@ -82,17 +84,22 @@
 								required="true" />
 
 							<h:outputLabel for="desde" value="Desde:" />
-							<p:calendar id="desde" effect="slideDown" value="#{scheduleController.event.startDate}"/>
+							<p:calendar id="desde" effect="slideDown" value="#{scheduleController.event.startDate}"
+							pattern="MM/dd/yyyy HH:mm" locale="es"/>
 
 							<h:outputLabel for="hasta" value="Hasta:" />
-							<p:calendar id="hasta" effect="slideDown" value="#{scheduleController.event.endDate}"/>
+							<p:calendar id="hasta" effect="slideDown" value="#{scheduleController.event.endDate}"
+							pattern="MM/dd/yyyy HH:mm" locale="es"/>
 
 							<h:outputLabel for="descripción" value="Descripción:" />	
 							<p:inputTextarea id="descripción" rows="4" cols="23" value="#{scheduleController.descripción}"/>
 							<h:outputLabel for="allDay" value="Todo el día" />
 							<h:selectBooleanCheckbox id="allDay"
 								value="#{scheduleController.event.allDay}" />
-							<p:commandButton type="reset" value="Cancelar" />
+							<p:commandButton value="Eliminar" 
+								actionListener="#{scheduleController.deleteEvent}"
+								oncomplete="myschedule.update();eventDialog.hide();"
+								/>
 							<p:commandButton value="Guardar"
 								actionListener="#{scheduleController.addEvent}"
 								oncomplete="myschedule.update();eventDialog.hide();" />
@@ -111,7 +118,7 @@
 	</style>
 	<SCRIPT type="text/javascript">
 		PrimeFaces.locales['es'] = {
-			closeText : 'Cerrar',
+			closeText : 'Hecho',
 			prevText : 'Anterior',
 			nextText : 'Siguiente',
 			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
