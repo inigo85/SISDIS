@@ -17,6 +17,8 @@ import javax.sql.DataSource;
 
 import es.ubu.agenda.beans.UserBean;
 import es.ubu.agenda.modelo.Tarea;
+import es.ubu.agenda.modelo.Usuario;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class Fachada {
@@ -35,27 +37,32 @@ public class Fachada {
 		return DBInstancia;
 	}
 
-	public int login(String usuario, String contrasena) {
+	public Usuario login(String usuario, String contrasena) {
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement st = null;
-		int id = -1;
+		Usuario usu=null;
 		try {
 			conn = ds.getConnection();
 			String sql;
+			usu=new Usuario();
 			sql = "SELECT * FROM usuario WHERE nombre='" + usuario
 					+ "' AND contraseña='" + contrasena + "';";
 			st = conn.prepareStatement(sql);
 			rs = st.executeQuery();
-			if (rs.next())
-				id = rs.getInt("id");
-			// que hacemos con la columna conectado??
+			if (rs.next()){
+				usu.setId(rs.getString("id"));
+				usu.setTipo(rs.getString("tipo").charAt(0));
+				usu.setNombre(rs.getString("nombre"));
+				usu.setEmail(rs.getString("email"));
+				usu.setContrasena(rs.getString("contraseña"));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DatabaseUtil.close(conn, st, rs);
 		}
-		return id;
+		return usu;
 
 	}
 	
@@ -90,6 +97,36 @@ public class Fachada {
 		return listaTareas;
 	}
 	
+	public List<Usuario> obtenerListaUsuarios(){
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement st = null;
+		List<Usuario> listaUsuarios = null;
+		try {
+			conn = ds.getConnection();
+			listaUsuarios=new ArrayList<Usuario>();
+			String sql;
+			sql = "SELECT * FROM usuario";
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			while (rs.next()){
+				Usuario usu=new Usuario();
+				usu.setId(rs.getString("id"));
+				usu.setEmail(rs.getString("email"));
+				usu.setNombre(rs.getString("nombre"));
+				usu.setTipo(rs.getString("tipo").charAt(0));
+				usu.setContrasena(rs.getString("contraseña"));
+				listaUsuarios.add(usu);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st, rs);
+		}
+		return listaUsuarios;
+	}
+	
+	
 	public List<Tarea> obenerTareas(int idUsuario){
 		Connection conn = null;
 		ResultSet rs = null;
@@ -121,6 +158,44 @@ public class Fachada {
 		return listaTareas;
 	}
 	
+	public List<Tarea> obenerTareas(){
+		Connection conn = null;
+		ResultSet rs = null, rs2=null;
+		PreparedStatement st = null;
+		List<Tarea> listaTareas = null;
+		boolean ok = false;
+		try {
+			conn = ds.getConnection();
+			listaTareas=new ArrayList<Tarea>();
+			String sql;
+			sql = "SELECT * FROM tarea";
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			while (rs.next()){
+				Tarea tarea=new Tarea();
+				tarea.setId(rs.getString("id"));
+				tarea.setDescripción(rs.getString("descripcion"));
+				tarea.setNombre(rs.getString("nombre"));
+				tarea.setFecha_inicio(rs.getTimestamp("fecha_inicio"));
+				tarea.setFecha_fin(rs.getTimestamp("fecha_fin"));
+				tarea.setTodo_el_día(rs.getBoolean("todo_el_dia"));
+				sql="SELECT nombre from usuario where id="+rs.getString("idUsuario")+";";
+				st = conn.prepareStatement(sql);
+				rs2=st.executeQuery();
+				if(rs2.next())
+					tarea.setNombreUsuario(rs2.getString("nombre"));
+				listaTareas.add(tarea);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st, rs);
+		}
+		return listaTareas;
+	}
+	
+	
+	
 	public void actualizarTarea(Tarea tarea, Tarea tarea2){
 		Connection conn = null;
 		PreparedStatement st = null;
@@ -140,8 +215,26 @@ public class Fachada {
 		}
 	}
 	
+	public void actualizarTarea(Tarea tarea, String id){
+		Connection conn = null;
+		PreparedStatement st = null;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "UPDATE tarea SET nombre='"+tarea.getNombre()+"', descripcion='"+tarea.getDescripción()+"', " +
+					"fecha_inicio='"+tarea.obtenerFechaFormateadaInicio()+"', fecha_fin='"+tarea.obtenerFechaFormateadaFin()+"', " +
+							"todo_el_dia=1 WHERE id="+id+";";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
+	}
 	
-	public int insertarTarea(Tarea tarea){
+	
+	public String insertarTarea(Tarea tarea){
 		Connection conn = null;
 		PreparedStatement st = null;
 		ResultSet rs=null;
@@ -158,15 +251,17 @@ public class Fachada {
 			ok=st.execute(sql);
 			sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='tarea';";
 			rs=st.executeQuery(sql);
-			if(rs.next())
+			if(rs.next()){
 				id=rs.getInt("Auto_increment");
+				id=id-1;
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DatabaseUtil.close(conn, st);
 		}
-		return id-1;
+		return String.valueOf(id);
 	}
 	
 	public void eliminarEvento(Tarea tarea){
@@ -184,6 +279,44 @@ public class Fachada {
 		} finally {
 			DatabaseUtil.close(conn, st);
 		}
+	}
+	
+	public void eliminarEvento(String id){
+		Connection conn = null;
+		PreparedStatement st = null;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "DELETE FROM tarea WHERE id="+id+";";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
+	}
+	
+	public String obtenerDescripcion(String id){
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement st = null;
+		String descripcion="";
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "SELECT descripcion FROM tarea WHERE id="+id+";";
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			if(rs.next())
+				descripcion=rs.getString("descripcion");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st, rs);
+		}
+		return descripcion;
 	}
 	
 	

@@ -16,9 +16,19 @@
 		<managed-bean-class>es.ubu.agenda.beans.ScheduleController</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-	    <managed-bean>
+	<managed-bean>
 		<managed-bean-name>tableBean</managed-bean-name>
 		<managed-bean-class>es.ubu.agenda.beans.TableBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>adminUserBean</managed-bean-name>
+		<managed-bean-class>es.ubu.agenda.beans.AdminUserBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>adminEventoBean</managed-bean-name>
+		<managed-bean-class>es.ubu.agenda.beans.AdminEventoBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
     <navigation-rule>
@@ -30,6 +40,10 @@
         <navigation-case>
             <from-outcome>failed</from-outcome>
             <to-view-id>login.xhtml</to-view-id>
+        </navigation-case>
+         <navigation-case>
+            <from-outcome>admin</from-outcome>
+            <to-view-id>admin.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 

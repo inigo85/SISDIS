@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.naming.NamingException;
@@ -108,9 +110,9 @@ public class ScheduleController {
 		this.setFechaSeleccionada(new Date());
 		this.setHora(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		for(Tarea tarea:lista){
-			DefaultScheduleEvent de=new DefaultScheduleEvent(tarea.getNombre(), tarea.getFecha_inicio(), tarea.getFecha_fin());
-			de.setId(tarea.getId());
+			DefaultScheduleEvent de=new DefaultScheduleEvent(tarea.getNombre(), tarea.getFecha_inicio(), tarea.getFecha_fin());		
 			eventModel.addEvent(de);
+			de.setId(tarea.getId());
 			
 		}
 
@@ -125,27 +127,41 @@ public class ScheduleController {
 	
 	public void addEvent(ActionEvent actionEvent) throws NamingException {
 		if(event.getId() == null){
+			String eventoId;
 			eventModel.addEvent(event);
 			fachada=Fachada.getInstance();
 			Tarea t = obtenerTarea(event);
-			fachada.insertarTarea(t);
+			eventoId=fachada.insertarTarea(t);
+			event.setId(eventoId);
+			actualizarListaTareas();
 		}
 		else
 		{
 			eventModel.updateEvent(event);
 			fachada=Fachada.getInstance();
 			Tarea t = obtenerTarea(event);
-			Tarea t2 = obtenerTarea(oldEvent);
-			fachada.actualizarTarea(t, tareaAntigua);
+			//Tarea t2 = obtenerTarea(oldEvent);
+			fachada.actualizarTarea(t, event.getId());
+			actualizarListaTareas();
 		}
 		event = new DefaultScheduleEvent();
 		this.setDescripción("");
 	}
+
+	private void actualizarListaTareas() throws NamingException {
+		ExternalContext tmpEC;
+		Map sMap;
+		tmpEC = FacesContext.getCurrentInstance().getExternalContext();
+		sMap = tmpEC.getSessionMap();
+		TableBean tb = (TableBean) sMap.get("tableBean");
+		tb.actualizarLista();
+	}
 	
 	public void deleteEvent(ActionEvent actionEvent) throws NamingException{
 		fachada=Fachada.getInstance();
-		fachada.eliminarEvento(tareaAntigua);
+		fachada.eliminarEvento(event.getId());
 		eventModel.deleteEvent(event);
+		this.actualizarListaTareas();
 		
 	}
 
@@ -160,11 +176,14 @@ public class ScheduleController {
 	}
 	
 	public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {
+		descripción="";
 		event = selectEvent.getScheduleEvent();
 		tareaAntigua = obtenerTarea(event);
+		descripción=fachada.obtenerDescripcion(event.getId());
 	}
 	
 	public void onDateSelect(DateSelectEvent selectEvent) {
+		descripción="";
 		event = new DefaultScheduleEvent("", selectEvent.getDate(), selectEvent.getDate());
 	}
 	
@@ -175,10 +194,11 @@ public class ScheduleController {
 		this.addEvent(null);
 	}
 	
-	public void onEventResize(ScheduleEntryResizeEvent event) {
+	public void onEventResize(ScheduleEntryResizeEvent event) throws NamingException {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
-		
 		addMessage(message);
+		this.event=event.getScheduleEvent();
+		this.addEvent(null);
 	}
 	
 	private void addMessage(FacesMessage message) {

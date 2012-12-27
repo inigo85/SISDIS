@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
+import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
 
 
@@ -104,11 +105,14 @@ public class UserBean {
 
 	public String obtainLogin() throws NamingException{
 		Fachada fachada=Fachada.getInstance();
-		int idUsuario;
-		idUsuario=fachada.login(login, password);
-		if(fachada.login(login, password)!=-1){
-		  setId(idUsuario);
-		  return "ok";
+		Usuario usuario;
+		usuario=fachada.login(login, password);
+		if(usuario!=null){
+		  setId(Integer.valueOf(usuario.getId()));
+		  if(usuario.getTipo()=='A' || usuario.getTipo()=='a')
+		    return "admin";
+		  else
+			return "ok";
 		}
 		return "failed";
 	}

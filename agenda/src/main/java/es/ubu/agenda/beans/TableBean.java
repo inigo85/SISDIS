@@ -42,8 +42,12 @@ public class TableBean {
 	
 	public TableBean() throws NamingException{
 		fachada=Fachada.getInstance();
-		listaTareas=fachada.obenerTareas(Fachada.getInstance().obtenerIdUsuario(), 23);
+		actualizarLista();
 		
+	}
+
+	public void actualizarLista() throws NamingException {
+		listaTareas=fachada.obenerTareas(Fachada.getInstance().obtenerIdUsuario());
 	}
 	
 	public List<Tarea> getListaTareas() {

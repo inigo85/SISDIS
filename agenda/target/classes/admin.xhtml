@@ -1,0 +1,187 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="center">
+			<p:tabView id="tabView">
+
+				<p:tab id="tab1" title="Usuarios">
+					<h:form id="form">
+
+						<p:growl id="messages" showDetail="true" />
+
+						<p:dataTable id="user" var="usuario"
+							value="#{adminUserBean.listaUsuarios}" editable="true">
+
+							<p:ajax event="rowEdit" listener="#{tableBean.onEdit}"
+								update=":tabView:form:messages" />
+							<p:ajax event="rowEditCancel" listener="#{tableBean.onCancel}"
+								update=":tabView:form:messages" />
+
+							<p:column headerText="Nombre" style="width:125px">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{usuario.nombre}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{usuario.nombre}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Email" style="width:125px">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{usuario.email}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{usuario.email}" style="width:100%"
+											label="Email" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Tipo" style="width:125px">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{usuario.tipo}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{usuario.tipo}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Contraseña" style="width:125px">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{usuario.contrasena}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{usuario.contrasena}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Opciones" style="width:50px">
+								<p:rowEditor />
+								<p:commandLink id="deleteLink"
+									styleClass="ui-icon ui-icon-trash"
+									action="#{userController.deleteUser(user.userId)}" />
+	
+
+							</p:column>
+						</p:dataTable>
+
+					</h:form>
+
+				</p:tab>
+
+				<p:tab id="tab2" title="Eventos">
+					<h:form id="formEvento">
+
+						<p:growl id="messagesEventos" showDetail="true" />
+
+						<p:dataTable id="eve" var="evento"
+							value="#{adminEventoBean.listaTareas}" editable="true">
+
+							<p:ajax event="rowEdit" listener="#{tableBean.onEdit}"
+								update=":tabView:formEvento:messagesEventos" />
+							<p:ajax event="rowEditCancel" listener="#{tableBean.onCancel}"
+								update=":tabView:formEvento:messagesEventos" />
+
+							<p:column headerText="Nombre" style="width:15%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{evento.nombre}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{evento.nombre}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Fecha inicio" style="width:12%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{evento.fecha_formateada}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{evento.fecha_formateada}" style="width:100%"
+											/>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Fecha fin" style="width:12%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{evento.fecha_formateada_fin}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{evento.fecha_formateada_fin}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Todo el dia" style="width:5%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{evento.todo_el_día}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{evento.todo_el_día}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							
+							
+							<p:column headerText="Descripción" style="width:30%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{evento.descripción}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{evento.descripción}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							
+							<p:column headerText="Nombre usuario" style="width:15%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{evento.nombreUsuario}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{evento.nombreUsuario}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Opciones">
+								<p:rowEditor />
+								<p:commandLink id="deleteLink"
+									styleClass="ui-icon ui-icon-trash"
+									action="#{userController.deleteUser(user.userId)}" />
+							</p:column>
+						</p:dataTable>
+
+					</h:form>
+
+				</p:tab>
+
+
+			</p:tabView>
+
+		</p:layoutUnit>
+
+	</p:layout>
+
+</h:body>
+</html>
