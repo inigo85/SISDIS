@@ -7,6 +7,20 @@ public class Usuario {
 	private String email;
 	private char tipo;
 	private String contrasena;
+	private boolean esAdmin;
+	
+	
+	
+	public boolean isEsAdmin() {
+		return esAdmin;
+	}
+	public void setEsAdmin(boolean esAdmin) {
+		this.esAdmin = esAdmin;
+		if(esAdmin)
+			setTipo('A');
+		else
+			setTipo('N');
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -24,6 +38,10 @@ public class Usuario {
 	}
 	public void setTipo(char tipo) {
 		this.tipo = tipo;
+		if(tipo=='A' || tipo=='a')
+			esAdmin=true;
+		else
+			esAdmin=false;
 	}
 	public String getContrasena() {
 		return contrasena;
@@ -38,6 +56,9 @@ public class Usuario {
 		this.id = id;
 	}
 	
-	
+	@Override
+	public String toString(){
+		return nombre;	
+	}
 
 }

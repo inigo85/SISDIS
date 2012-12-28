@@ -16,21 +16,26 @@
 
 						<p:growl id="messages" showDetail="true" />
 
-						<p:dataTable id="user" var="usuario"
-							value="#{adminUserBean.listaUsuarios}" editable="true">
+						<p:dataTable id="user" var="usuario" styleClass="classUser"
+							value="#{adminUserBean.listaUsuarios}" editable="true"
+							widgetVar="userTable" paginator="true"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+							rows="25" type="none" paginatorPosition="bottom">
 
-							<p:ajax event="rowEdit" listener="#{tableBean.onEdit}"
+
+							<p:ajax event="rowEdit" listener="#{adminUserBean.onEdit}"
 								update=":tabView:form:messages" />
-							<p:ajax event="rowEditCancel" listener="#{tableBean.onCancel}"
+							<p:ajax event="rowEditCancel"
+								listener="#{adminUserBean.onCancel}"
 								update=":tabView:form:messages" />
 
-							<p:column headerText="Nombre" style="width:125px">
+							<p:column headerText="Nombre" style="width:125px" sortBy="#{usuario.nombre}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{usuario.nombre}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{usuario.nombre}" style="width:100%" />
+										<p:inputText value="#{usuario.nombre}" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -41,19 +46,18 @@
 										<h:outputText value="#{usuario.email}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{usuario.email}" style="width:100%"
-											label="Email" />
+										<p:inputText value="#{usuario.email}" label="Email" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Tipo" style="width:125px">
+							<p:column headerText="Tipo" style="width:125px" sortBy="#{usuario.esAdmin}" >
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{usuario.tipo}" />
+										<h:outputText value="#{usuario.esAdmin}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{usuario.tipo}" style="width:100%" />
+										<p:selectBooleanCheckbox value="#{usuario.esAdmin}" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -64,7 +68,7 @@
 										<h:outputText value="#{usuario.contrasena}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{usuario.contrasena}" style="width:100%" />
+										<p:inputText value="#{usuario.contrasena}" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -73,11 +77,17 @@
 								<p:rowEditor />
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
-									action="#{userController.deleteUser(user.userId)}" />
-	
-
+									action="#{adminUserBean.onDelete(usuario.id)}"
+									oncomplete="userTable.update();" update=":tabView:form:user" />
 							</p:column>
 						</p:dataTable>
+						
+						<p:commandLink id="add"
+									actionListener="#{adminUserBean.anadirUsuario}" value="Añadir usuario"
+									style="margin-right:20px;"
+									update=":tabView:form:user"
+									oncomplete="editLastDatatableRow('classUser');">
+						</p:commandLink>
 
 					</h:form>
 
@@ -89,11 +99,15 @@
 						<p:growl id="messagesEventos" showDetail="true" />
 
 						<p:dataTable id="eve" var="evento"
-							value="#{adminEventoBean.listaTareas}" editable="true">
+							value="#{adminEventoBean.listaTareas}" editable="true"
+							widgetVar="eveTable" styleClass="classEvento" paginator="true"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+							rows="25" type="none" paginatorPosition="bottom">
 
-							<p:ajax event="rowEdit" listener="#{tableBean.onEdit}"
+							<p:ajax event="rowEdit" listener="#{adminEventoBean.onEdit}"
 								update=":tabView:formEvento:messagesEventos" />
-							<p:ajax event="rowEditCancel" listener="#{tableBean.onCancel}"
+							<p:ajax event="rowEditCancel"
+								listener="#{adminEventoBean.onCancel}"
 								update=":tabView:formEvento:messagesEventos" />
 
 							<p:column headerText="Nombre" style="width:15%">
@@ -102,30 +116,31 @@
 										<h:outputText value="#{evento.nombre}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{evento.nombre}" style="width:100%" />
+										<p:inputText value="#{evento.nombre}" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Fecha inicio" style="width:12%">
+							<p:column headerText="Fecha inicio" style="width:12%" sortBy="#{evento.fecha_inicio}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.fecha_formateada}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{evento.fecha_formateada}" style="width:100%"
-											/>
+										<p:calendar effect="slideDown" value="#{evento.fecha_inicio}"
+											pattern="MM/dd/yyyy HH:mm" locale="es" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Fecha fin" style="width:12%">
+							<p:column headerText="Fecha fin" style="width:12%" sortBy="#{evento.fecha_fin}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.fecha_formateada_fin}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{evento.fecha_formateada_fin}" style="width:100%" />
+										<p:calendar effect="slideDown" value="#{evento.fecha_fin}"
+											pattern="MM/dd/yyyy HH:mm" locale="es" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -136,30 +151,35 @@
 										<h:outputText value="#{evento.todo_el_día}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{evento.todo_el_día}" style="width:100%" />
+										<p:selectBooleanCheckbox value="#{evento.todo_el_día}" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
-							
-							
+
+
 							<p:column headerText="Descripción" style="width:30%">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.descripción}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{evento.descripción}" style="width:100%" />
+										<p:inputText value="#{evento.descripción}" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
-							
-							<p:column headerText="Nombre usuario" style="width:15%">
+
+							<p:column headerText="Nombre usuario" style="width:15%" sortBy="#{evento.nombreUsuario}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.nombreUsuario}" />
 									</f:facet>
 									<f:facet name="input">
-										<p:inputText value="#{evento.nombreUsuario}" style="width:100%" />
+										<p:selectOneMenu value="#{evento.nombreUsuario}"
+											style="width:100%">
+											<f:selectItems value="#{adminEventoBean.listaUsuarios}"
+												var="listaU" itemLabel="#{listaU}" itemValue="#{listaU}"
+												style="width:100%" />
+										</p:selectOneMenu>
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -168,9 +188,19 @@
 								<p:rowEditor />
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
-									action="#{userController.deleteUser(user.userId)}" />
+									action="#{adminEventoBean.onDelete(evento.id)}"
+									oncomplete="eveTable.update();"
+									update=":tabView:formEvento:eve" />
 							</p:column>
+
 						</p:dataTable>
+						
+						<p:commandLink id="add"
+									actionListener="#{adminEventoBean.anadirEvento}" value="Añadir evento"
+									style="margin-right:20px;"
+									update=":tabView:formEvento:eve"
+									oncomplete="editLastDatatableRow('classEvento');">
+								</p:commandLink>
 
 					</h:form>
 
@@ -182,6 +212,47 @@
 		</p:layoutUnit>
 
 	</p:layout>
+	<SCRIPT type="text/javascript">
+		PrimeFaces.locales['es'] = {
+			closeText : 'Hecho',
+			prevText : 'Anterior',
+			nextText : 'Siguiente',
+			monthNames : [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+					'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre',
+					'Noviembre', 'Diciembre' ],
+			monthNamesShort : [ 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+					'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic' ],
+			dayNames : [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves',
+					'Viernes', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ],
+			dayNamesMin : [ 'D', 'L', 'M', 'X', 'J', 'V', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Sólo hora',
+			timeText : 'Tiempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Fecha actual',
+			ampm : false,
+			month : 'Mes',
+			week : 'Semana',
+			day : 'Día',
+			allDayText : 'Todo el día'
+		};
+	</SCRIPT>
+	
+		 <script type="text/javascript">
+        function editLastDatatableRow(name){
 
+      jQuery('.'+name+' tr').last().find('span.ui-icon-pencil').each(function(){
+         jQuery(this).click()
+      });
+   }
+
+    </script>
 </h:body>
 </html>

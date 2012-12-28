@@ -195,6 +195,29 @@ public class Fachada {
 	}
 	
 	
+	public String obtenerIDUsuarioPorNombre(String nombre){
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement st = null;
+		String id="";
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "SELECT id FROM usuario WHERE nombre='"+nombre+"';";
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			if (rs.next()){
+				id=rs.getString("id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st, rs);
+		}
+		return id;
+	}
+	
+	
 	
 	public void actualizarTarea(Tarea tarea, Tarea tarea2){
 		Connection conn = null;
@@ -204,8 +227,26 @@ public class Fachada {
 			String sql;
 			sql = "UPDATE tarea SET nombre='"+tarea.getNombre()+"', descripcion='"+tarea.getDescripción()+"', " +
 					"fecha_inicio='"+tarea.obtenerFechaFormateadaInicio()+"', fecha_fin='"+tarea.obtenerFechaFormateadaFin()+"', " +
-							"todo_el_dia=1 WHERE nombre='"+tarea2.getNombre()+"' AND fecha_inicio='"+tarea2.obtenerFechaFormateadaInicio()+"' " +
+							"todo_el_dia="+tarea2.isTodo_el_día()+" WHERE nombre='"+tarea2.getNombre()+"' AND fecha_inicio='"+tarea2.obtenerFechaFormateadaInicio()+"' " +
 									"AND fecha_fin='"+tarea2.obtenerFechaFormateadaFin()+"';";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
+	}
+	
+	public void actualizarUsuario(Usuario usuario){
+		Connection conn = null;
+		PreparedStatement st = null;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "UPDATE usuario SET nombre='"+usuario.getNombre()+"', email='"+usuario.getEmail()+"', " +
+					"tipo='"+usuario.getTipo()+"', contraseña='"+usuario.getContrasena()+"'" +
+							" WHERE id="+usuario.getId()+";";
 			st = conn.prepareStatement(sql);
 			st.execute(sql);
 		} catch (Exception e) {
@@ -223,7 +264,7 @@ public class Fachada {
 			String sql;
 			sql = "UPDATE tarea SET nombre='"+tarea.getNombre()+"', descripcion='"+tarea.getDescripción()+"', " +
 					"fecha_inicio='"+tarea.obtenerFechaFormateadaInicio()+"', fecha_fin='"+tarea.obtenerFechaFormateadaFin()+"', " +
-							"todo_el_dia=1 WHERE id="+id+";";
+							"todo_el_dia="+tarea.isTodo_el_día()+" WHERE id="+id+";";
 			st = conn.prepareStatement(sql);
 			st.execute(sql);
 		} catch (Exception e) {
@@ -238,18 +279,42 @@ public class Fachada {
 		Connection conn = null;
 		PreparedStatement st = null;
 		ResultSet rs=null;
-		boolean ok = false;
-		int idUsuario;
 		int id=-1;
 		try {
 			conn = ds.getConnection();
 			String sql;
-			idUsuario=obtenerIdUsuario();
 			sql = "INSERT INTO tarea(nombre,descripcion,fecha_inicio,fecha_fin,todo_el_dia,idUsuario) VALUES('"+tarea.getNombre()+"','"+tarea.getDescripción()+"','"+
-					tarea.obtenerFechaFormateadaInicio()+"','"+tarea.obtenerFechaFormateadaFin()+"',1,"+idUsuario+");";
+					tarea.obtenerFechaFormateadaInicio()+"','"+tarea.obtenerFechaFormateadaFin()+"',"+tarea.isTodo_el_día()+","+tarea.getIdUsuario()+");";
 			st = conn.prepareStatement(sql);
-			ok=st.execute(sql);
+			st.execute(sql);
 			sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='tarea';";
+			rs=st.executeQuery(sql);
+			if(rs.next()){
+				id=rs.getInt("Auto_increment");
+				id=id-1;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
+		return String.valueOf(id);
+	}
+	
+	public String insertarUsuario(Usuario usuario){
+		Connection conn = null;
+		PreparedStatement st = null;
+		ResultSet rs=null;
+		int id=-1;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "INSERT INTO usuario(nombre,email,tipo,contraseña) VALUES('"+usuario.getNombre()+"','"+usuario.getEmail()+"','"+
+					usuario.getTipo()+"','"+usuario.getContrasena()+"');";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+			sql="SELECT Auto_increment FROM information_schema.tables WHERE table_name='usuario';";
 			rs=st.executeQuery(sql);
 			if(rs.next()){
 				id=rs.getInt("Auto_increment");
@@ -317,6 +382,22 @@ public class Fachada {
 			DatabaseUtil.close(conn, st, rs);
 		}
 		return descripcion;
+	}
+	
+	public void eliminarUsuario(String id){
+		Connection conn = null;
+		PreparedStatement st = null;
+		try {
+			conn = ds.getConnection();
+			String sql;
+			sql = "DELETE FROM usuario WHERE id="+id+";";
+			st = conn.prepareStatement(sql);
+			st.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DatabaseUtil.close(conn, st);
+		}
 	}
 	
 	

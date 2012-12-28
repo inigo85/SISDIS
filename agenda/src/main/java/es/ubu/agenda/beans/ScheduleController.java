@@ -113,7 +113,7 @@ public class ScheduleController {
 			DefaultScheduleEvent de=new DefaultScheduleEvent(tarea.getNombre(), tarea.getFecha_inicio(), tarea.getFecha_fin());		
 			eventModel.addEvent(de);
 			de.setId(tarea.getId());
-			
+			de.setAllDay(tarea.isTodo_el_día());
 		}
 
 		
@@ -131,6 +131,7 @@ public class ScheduleController {
 			eventModel.addEvent(event);
 			fachada=Fachada.getInstance();
 			Tarea t = obtenerTarea(event);
+			t.setIdUsuario(String.valueOf(fachada.obtenerIdUsuario()));
 			eventoId=fachada.insertarTarea(t);
 			event.setId(eventoId);
 			actualizarListaTareas();

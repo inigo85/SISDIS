@@ -5,6 +5,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.naming.NamingException;
+
+import es.ubu.agenda.persistencia.Fachada;
+
 public class Tarea {
 
 	private String id;
@@ -36,6 +40,8 @@ public class Tarea {
 	private String fecha_formateada;
 	
 	private String fecha_formateada_fin;
+	
+	private String idUsuario;
 
 	public String getFecha_formateada() {
 		return fecha_formateada;
@@ -73,6 +79,7 @@ public class Tarea {
 		setFecha_formateada_fin(df.format(fecha_fin));
 	}
 
+
 	public boolean isTodo_el_día() {
 		return todo_el_día;
 	}
@@ -80,8 +87,7 @@ public class Tarea {
 	public void setTodo_el_día(boolean todo_el_día) {
 		this.todo_el_día = todo_el_día;
 	}
-	
-	
+
 	public Timestamp obtenerFechaFormateadaInicio(){
 		return new Timestamp(fecha_inicio.getTime());
 	}
@@ -99,6 +105,12 @@ public class Tarea {
 		this.nombreUsuario = nombreUsuario;
 	}
 
+	public void rellenarIDUsuario() throws NamingException {
+		Fachada fachada;
+		fachada=Fachada.getInstance();
+		setIdUsuario(fachada.obtenerIDUsuarioPorNombre(nombreUsuario));
+	}
+
 	public String getFecha_formateada_fin() {
 		return fecha_formateada_fin;
 	}
@@ -106,6 +118,15 @@ public class Tarea {
 	public void setFecha_formateada_fin(String fecha_formateada_fin) {
 		this.fecha_formateada_fin = fecha_formateada_fin;
 	}
+
+	public String getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	
 	
 	
     

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.naming.NamingException;
 
+import org.primefaces.event.RowEditEvent;
+
 import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
 
@@ -12,11 +14,13 @@ import es.ubu.agenda.persistencia.Fachada;
 @ManagedBean
 public class AdminUserBean {
 	private List<Usuario> listaUsuarios;
+	private List<Usuario> listaFiltrada;
 	private Fachada fachada;
 	
 	public AdminUserBean() throws NamingException{
 		fachada=Fachada.getInstance();
 		listaUsuarios=fachada.obtenerListaUsuarios();
+		listaFiltrada=fachada.obtenerListaUsuarios();
 	}
 
 	public List<Usuario> getListaUsuarios() {
@@ -27,6 +31,43 @@ public class AdminUserBean {
 		this.listaUsuarios = listaUsuarios;
 	}
 	
-	 
+	public void onEdit(RowEditEvent event){
+		Usuario usu;
+		usu=(Usuario)event.getObject();
+		if(usu.getId()!=null)
+		  fachada.actualizarUsuario(usu);
+		else
+		  usu.setId(fachada.insertarUsuario(usu));
+	}
+	
+    public void onCancel(RowEditEvent event){
+		
+		
+	}
+    
+    public void onDelete(String id){
+		fachada.eliminarUsuario(id);
+		int contador=0;
+		for(Usuario u:listaUsuarios){
+			if(u.getId().compareTo(id)==0)
+				break;
+			contador++;
+		}
+		listaUsuarios.remove(contador);
+    }
+
+	public List<Usuario> getListaFiltrada() {
+		return listaFiltrada;
+	}
+
+	public void setListaFiltrada(List<Usuario> listaFiltrada) {
+		this.listaFiltrada = listaFiltrada;
+	}
+    
+	
+	public void anadirUsuario(){
+		listaUsuarios.add(new Usuario());
+	}
+    
 	
 }

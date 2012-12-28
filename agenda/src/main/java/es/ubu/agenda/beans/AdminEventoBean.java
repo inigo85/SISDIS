@@ -5,18 +5,23 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.naming.NamingException;
 
+import org.primefaces.event.RowEditEvent;
+
 import es.ubu.agenda.modelo.Tarea;
+import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
 
 @ManagedBean
 public class AdminEventoBean {
 	private List<Tarea> listaTareas;
+	private List<Usuario> listaUsuarios;
 	private Fachada fachada;
-	
-	public AdminEventoBean() throws NamingException{
-		fachada=Fachada.getInstance();
-		listaTareas=fachada.obenerTareas();
-		
+
+	public AdminEventoBean() throws NamingException {
+		fachada = Fachada.getInstance();
+		listaTareas = fachada.obenerTareas();
+		listaUsuarios = fachada.obtenerListaUsuarios();
+
 	}
 
 	public List<Tarea> getListaTareas() {
@@ -26,8 +31,43 @@ public class AdminEventoBean {
 	public void setListaTareas(List<Tarea> listaTareas) {
 		this.listaTareas = listaTareas;
 	}
-	
-	
-	
-	
+
+	public List<Usuario> getListaUsuarios() {
+		return listaUsuarios;
+	}
+
+	public void setListaUsuarios(List<Usuario> listaUsuarios) {
+		this.listaUsuarios = listaUsuarios;
+	}
+
+	public void onEdit(RowEditEvent event) throws NamingException {
+		Tarea t;
+		t = (Tarea) event.getObject();
+		if(t.getId()!=null)
+		  fachada.actualizarTarea(t, t.getId());
+		else{
+		  t.rellenarIDUsuario();
+		  t.setId(fachada.insertarTarea(t));
+		}
+	}
+
+	public void onCancel(RowEditEvent event) {
+
+	}
+
+	public void onDelete(String id) {
+		fachada.eliminarEvento(id);
+		int contador = 0;
+		for (Tarea t : listaTareas) {
+			if (t.getId().compareTo(id) == 0)
+				break;
+			contador++;
+		}
+		listaTareas.remove(contador);
+	}
+
+	public void anadirEvento() {
+		listaTareas.add(new Tarea());
+	}
+
 }

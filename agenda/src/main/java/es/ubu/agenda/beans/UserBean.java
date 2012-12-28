@@ -3,6 +3,7 @@ package es.ubu.agenda.beans;
 import java.sql.SQLException;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import es.ubu.agenda.persistencia.Fachada;
  * Bean implementation class ValidateBean.
  */
 @ManagedBean
+@SessionScoped
 public class UserBean {
 
 	/**
@@ -109,14 +111,19 @@ public class UserBean {
 		usuario=fachada.login(login, password);
 		if(usuario!=null){
 		  setId(Integer.valueOf(usuario.getId()));
+		  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(getLogin(), getId());
 		  if(usuario.getTipo()=='A' || usuario.getTipo()=='a')
 		    return "admin";
 		  else
 			return "ok";
+          
 		}
 		return "failed";
 	}
 	
-	
+	public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "index?faces-redirect=true";
+    }
 	
 }
