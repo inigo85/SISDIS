@@ -1,5 +1,6 @@
 package es.ubu.agenda.beans;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
 import javax.faces.bean.ManagedBean;
@@ -17,7 +18,7 @@ import es.ubu.agenda.persistencia.Fachada;
  */
 @ManagedBean
 @SessionScoped
-public class UserBean {
+public class UserBean implements Serializable{
 
 	/**
 	 * Login user.
@@ -111,7 +112,7 @@ public class UserBean {
 		usuario=fachada.login(login, password);
 		if(usuario!=null){
 		  setId(Integer.valueOf(usuario.getId()));
-		  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(getLogin(), getId());
+		  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", getId());
 		  if(usuario.getTipo()=='A' || usuario.getTipo()=='a')
 		    return "admin";
 		  else
@@ -123,7 +124,8 @@ public class UserBean {
 	
 	public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "index?faces-redirect=true";
+        return "logout";
     }
+	
 	
 }

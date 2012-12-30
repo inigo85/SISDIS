@@ -1,34 +1,66 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
-      
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
 <h:head>
-	<META HTTP-EQUIV="refresh" CONTENT="15"/>
- </h:head>
+	<META HTTP-EQUIV="refresh" CONTENT="300" />
+</h:head>
 
 <h:body>
- <center>
-	  <h:form >
-	  		<h1>
-		  		<font size="7">
-		  		Validacion
-		  		</font>
-	  		</h1>
-	  		<font size="5">
-		  		Login:
-		  		<h:inputText id="login" name="nombre" value="#{UserBean.login}" required="true"></h:inputText>
-		  		
-		  		<br/>
-		  		<br/>	
-		  		Password:
-		  		<h:inputSecret value="#{UserBean.password}" required="true"></h:inputSecret>
-		  	</font>
-		  	<br/>
-		  	<br/>
-	    	<h:commandButton value="Enviar" type="submit" action="#{UserBean.obtainLogin}"/>
-	  		<h:commandButton value="Cancelar" type="reset"/>
-	  </h:form>
-  </center>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="center" size="77%">
+			<h:form>
+
+				<p:panel position="north" size="15%">
+	UBUCalendar
+	</p:panel>
+
+				<p:panel id="panel" header="Login" style="margin-bottom:10px;">
+					<p:messages id="message" />
+					<h:panelGrid columns="2">
+						<h:outputText value="Usuario: " />
+						<p:inputText id="login" name="nombre" value="#{UserBean.login}"
+							required="true" label="Nombre"></p:inputText>
+						<h:outputLabel value="Contraseña: " />
+						<p:password id="pass" value="#{UserBean.password}" required="true"
+							label="Contraseña" />
+						<p:commandButton value="Entrar" type="submit"
+							action="#{UserBean.obtainLogin}" update="panel" />
+						<p:commandButton value="Cancelar" type="reset" />
+						<p:commandLink id="registro" value="Registro" onclick="pnlRegistro.show();"/>
+					</h:panelGrid>
+				</p:panel>
+				</h:form>
+				<h:form>
+				<p:panel header="Registro" autoUpdate="true" visible="false" widgetVar="pnlRegistro">
+					<h:panelGrid columns="3">
+						<h:outputText value="Nombre usuario: " />
+						<p:inputText id="nUsuario" name="nombre"
+							value="#{registroBean.nombre}" required="true" label="Nombre"></p:inputText>
+							<p:message  for="nUsuario" />
+						<h:outputLabel for="pwd1" value="Contraseña: " />
+						<p:password id="pwd1" value="#{registroBean.contraseña}"
+							match="pwd2" label="Password 1" required="true" feedback="true"/>
+							<p:message  for="pwd1" />
+
+						<h:outputLabel for="pwd2" value="Confirma contraseña: " />
+						<p:password id="pwd2" label="Password 2" required="true" />
+						<p:message  for="pwd2" />
+						<h:outputText value="Email: " />
+						<p:inputText id="email" name="email"
+							value="#{registroBean.email}" required="true" label="Email"></p:inputText>
+							<p:message  for="email" />
+							<p:commandButton value="Guardar" type="submit" action="#{registroBean.registrarUsuario}" />
+						<p:commandButton value="Cancelar" type="reset" />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+
+
+
+		</p:layoutUnit>
+	</p:layout>
 </h:body>
 </html>

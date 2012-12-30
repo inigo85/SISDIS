@@ -7,8 +7,31 @@
 
 </h:head>
 <h:body>
+
 	<p:layout fullPage="true">
 		<p:layoutUnit position="center">
+			<h:form>
+
+				<p:growl id="toolbar" />
+
+				<p:toolbar>
+				    <p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
+				    <p:outputLabel>
+				    UBUCalendar - Administración
+				    </p:outputLabel>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right" style="margin-right:2%">
+						
+						<p:menuButton value="Opciones" >
+							<p:menuitem value=" Ir al calendario"  icon="ui-icon-calendar" action="#{adminUserBean.irAlCalendario()}"/>
+							<p:menuitem value=" Desconectar" icon="ui-icon-power" action="#{adminUserBean.desconectar()}"/>
+						</p:menuButton>
+
+					</p:toolbarGroup>
+
+
+				</p:toolbar>
+			</h:form>
 			<p:tabView id="tabView">
 
 				<p:tab id="tab1" title="Usuarios">
@@ -29,7 +52,8 @@
 								listener="#{adminUserBean.onCancel}"
 								update=":tabView:form:messages" />
 
-							<p:column headerText="Nombre" style="width:125px" sortBy="#{usuario.nombre}">
+							<p:column headerText="Nombre" style="width:125px"
+								sortBy="#{usuario.nombre}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{usuario.nombre}" />
@@ -51,7 +75,8 @@
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Tipo" style="width:125px" sortBy="#{usuario.esAdmin}" >
+							<p:column headerText="Tipo" style="width:125px"
+								sortBy="#{usuario.esAdmin}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{usuario.esAdmin}" />
@@ -81,12 +106,11 @@
 									oncomplete="userTable.update();" update=":tabView:form:user" />
 							</p:column>
 						</p:dataTable>
-						
+
 						<p:commandLink id="add"
-									actionListener="#{adminUserBean.anadirUsuario}" value="Añadir usuario"
-									style="margin-right:20px;"
-									update=":tabView:form:user"
-									oncomplete="editLastDatatableRow('classUser');">
+							actionListener="#{adminUserBean.anadirUsuario}"
+							value="Añadir usuario" update=":tabView:form:user"
+							oncomplete="editLastDatatableRow('classUser');">
 						</p:commandLink>
 
 					</h:form>
@@ -121,7 +145,8 @@
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Fecha inicio" style="width:12%" sortBy="#{evento.fecha_inicio}">
+							<p:column headerText="Fecha inicio" style="width:12%"
+								sortBy="#{evento.fecha_inicio}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.fecha_formateada}" />
@@ -133,7 +158,8 @@
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Fecha fin" style="width:12%" sortBy="#{evento.fecha_fin}">
+							<p:column headerText="Fecha fin" style="width:12%"
+								sortBy="#{evento.fecha_fin}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.fecha_formateada_fin}" />
@@ -168,7 +194,8 @@
 								</p:cellEditor>
 							</p:column>
 
-							<p:column headerText="Nombre usuario" style="width:15%" sortBy="#{evento.nombreUsuario}">
+							<p:column headerText="Nombre usuario" style="width:15%"
+								sortBy="#{evento.nombreUsuario}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{evento.nombreUsuario}" />
@@ -194,13 +221,13 @@
 							</p:column>
 
 						</p:dataTable>
-						
+
 						<p:commandLink id="add"
-									actionListener="#{adminEventoBean.anadirEvento}" value="Añadir evento"
-									style="margin-right:20px;"
-									update=":tabView:formEvento:eve"
-									oncomplete="editLastDatatableRow('classEvento');">
-								</p:commandLink>
+							actionListener="#{adminEventoBean.anadirEvento}"
+							value="Añadir evento" update=":tabView:formEvento:eve"
+							oncomplete="editLastDatatableRow('classEvento');">
+						</p:commandLink>
+
 
 					</h:form>
 
@@ -244,15 +271,15 @@
 			allDayText : 'Todo el día'
 		};
 	</SCRIPT>
-	
-		 <script type="text/javascript">
-        function editLastDatatableRow(name){
 
-      jQuery('.'+name+' tr').last().find('span.ui-icon-pencil').each(function(){
-         jQuery(this).click()
-      });
-   }
+	<script type="text/javascript">
+		function editLastDatatableRow(name) {
 
-    </script>
+			jQuery('.' + name + ' tr').last().find('span.ui-icon-pencil').each(
+					function() {
+						jQuery(this).click()
+					});
+		}
+	</script>
 </h:body>
 </html>

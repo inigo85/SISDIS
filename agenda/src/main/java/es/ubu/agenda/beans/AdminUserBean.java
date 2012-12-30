@@ -1,8 +1,11 @@
 package es.ubu.agenda.beans;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 
 import org.primefaces.event.RowEditEvent;
@@ -69,5 +72,18 @@ public class AdminUserBean {
 		listaUsuarios.add(new Usuario());
 	}
     
+	
+	public String desconectar(){
+		ExternalContext tmpEC;
+	    Map sMap;
+	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
+	    sMap = tmpEC.getSessionMap();
+	    UserBean user = (UserBean) sMap.get("UserBean");
+	    return user.logout();
+	}
+	
+	public String irAlCalendario(){
+		return "calendario";
+	}
 	
 }

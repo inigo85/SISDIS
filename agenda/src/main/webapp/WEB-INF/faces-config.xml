@@ -31,6 +31,18 @@
 		<managed-bean-class>es.ubu.agenda.beans.AdminEventoBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	  <managed-bean>
+		<managed-bean-name>registroBean</managed-bean-name>
+		<managed-bean-class>es.ubu.agenda.beans.RegistroBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<navigation-rule>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>loginPage</from-outcome>
+            <to-view-id>login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     <navigation-rule>
         <from-view-id>login.xhtml</from-view-id>
         <navigation-case>
@@ -47,10 +59,17 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>admin.xhtml</from-view-id>
+        <from-view-id>/*</from-view-id>
         <navigation-case>
-            <from-outcome>loginPage</from-outcome>
+            <from-outcome>logout</from-outcome>
             <to-view-id>login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+      <navigation-rule>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>calendario</from-outcome>
+            <to-view-id>main.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
