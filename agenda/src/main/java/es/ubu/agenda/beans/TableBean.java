@@ -1,5 +1,6 @@
 package es.ubu.agenda.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,7 +16,7 @@ import es.ubu.agenda.persistencia.Fachada;
 import es.ubu.agenda.modelo.Tarea;
 
 @ManagedBean
-public class TableBean {
+public class TableBean implements Serializable{
 
 	private Tarea tareaSeleccionada;
 	
@@ -38,6 +39,7 @@ public class TableBean {
 	}
 
 	private List<Tarea> listaTareas;
+	private List<Tarea> listaTareasAntiguas;
 	private Fachada fachada;
 	
 	public TableBean() throws NamingException{
@@ -58,5 +60,14 @@ public class TableBean {
 		this.listaTareas = listaTareas;
 	}
 
+	public List<Tarea> getListaTareasAntiguas() {
+		return listaTareasAntiguas;
+	}
+
+	public void setListaTareasAntiguas(List<Tarea> listaTareasAntiguas) {
+		this.listaTareasAntiguas = listaTareasAntiguas;
+	}
+
+	
 
 }

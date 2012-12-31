@@ -1,11 +1,12 @@
 package es.ubu.agenda.beans;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.primefaces.event.DateSelectEvent;
 
-public class CalendarBean {
+public class CalendarBean implements Serializable {
 
 	private Date date1;
 	

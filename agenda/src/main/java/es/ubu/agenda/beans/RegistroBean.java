@@ -1,5 +1,7 @@
 package es.ubu.agenda.beans;
 
+import java.io.Serializable;
+
 import javax.annotation.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
@@ -9,7 +11,7 @@ import es.ubu.agenda.persistencia.Fachada;
 
 
 @ManagedBean
-public class RegistroBean {
+public class RegistroBean implements Serializable{
 
 	private String nombre;
 	private String contraseña;

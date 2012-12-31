@@ -49,12 +49,55 @@
 					</h:form>
 				</p:tab>
 			</p:accordionPanel>
+			
+			<p:accordionPanel id="acordeonAntiguas">
+				<p:tab title="Tareas pasadas">
+					<h:form id="panelTareasAntiguas" style="width:130%;margin-left:-15%">
+						<p:dataList value="#{tableBean.listaTareasAntiguas}" var="tarea"
+							id="tareas" paginator="true" rows="5" effectSpeed="fast"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" type="none"
+							paginatorPosition="bottom">
+
+							<!-- 							<f:facet name="header"> -->
+							<!--                 Tareas -->
+							<!--             </f:facet> -->
+							<p:commandButton icon="ui-icon-calendar"
+								style="width:10%;height:4%" update=":Forma:calendario">
+								<f:setPropertyActionListener value="#{tarea}"
+									target="#{tableBean.tareaSeleccionada}" />
+							</p:commandButton>
+
+							<h:outputText value="#{tarea.nombre}: #{tarea.fecha_formateada}"
+								style="margin-left:2px;font-size:80%" />
+							<br />
+						</p:dataList>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
 
 
 		</p:layoutUnit>
 
 		<p:layoutUnit position="center" size="77%">
 			<DIV align="center">
+			<h:form>
+
+				<p:growl id="toolbar" />
+
+				<p:toolbar>
+				    <p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
+				    <p:outputLabel>
+				    UBUCalendar - Calendario
+				    </p:outputLabel>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right" style="margin-right:2%">
+						<p:commandButton value=" Desconectar" icon="ui-icon-power" action="#{adminUserBean.desconectar()}"/>
+					</p:toolbarGroup>
+
+
+				</p:toolbar>
+			</h:form>
 				<h:form id="Forma">
 
 					<p:growl id="messages" showDetail="true" />

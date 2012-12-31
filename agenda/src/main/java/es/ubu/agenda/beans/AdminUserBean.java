@@ -1,5 +1,6 @@
 package es.ubu.agenda.beans;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import es.ubu.agenda.persistencia.Fachada;
 
 
 @ManagedBean
-public class AdminUserBean {
+public class AdminUserBean implements Serializable{
 	private List<Usuario> listaUsuarios;
 	private List<Usuario> listaFiltrada;
 	private Fachada fachada;

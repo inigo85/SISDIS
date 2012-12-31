@@ -2,6 +2,7 @@ package es.ubu.agenda.beans;
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +30,7 @@ import es.ubu.agenda.modelo.Tarea;
 import es.ubu.agenda.persistencia.Fachada;
 
 @ManagedBean
-public class ScheduleController {
+public class ScheduleController implements Serializable{
 
 	private ScheduleModel eventModel;
 	
@@ -189,14 +190,14 @@ public class ScheduleController {
 	}
 	
 	public void onEventMove(ScheduleEntryMoveEvent event) throws NamingException {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento movido", "Días:" + event.getDayDelta() + ", Minutos:" + event.getMinuteDelta());
 		addMessage(message);
 		this.event=event.getScheduleEvent();
 		this.addEvent(null);
 	}
 	
 	public void onEventResize(ScheduleEntryResizeEvent event) throws NamingException {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento redimensionado", "Días:" + event.getDayDelta() + ", Minutos:" + event.getMinuteDelta());
 		addMessage(message);
 		this.event=event.getScheduleEvent();
 		this.addEvent(null);
