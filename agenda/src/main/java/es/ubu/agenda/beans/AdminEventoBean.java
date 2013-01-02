@@ -15,7 +15,6 @@ import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
 
 @ManagedBean
-@SessionScoped
 public class AdminEventoBean implements Serializable{
 	private List<Tarea> listaTareas;
 	private List<Usuario> listaUsuarios;

@@ -8,22 +8,8 @@
 </h:head>
 <h:body>
 	<p:layout fullPage="true">
-
-
-		<!-- 		<p:layoutUnit position="north" size="50" resizable="true" -->
-		<!-- 			closable="false" collapsible="true"> -->
-		<!-- 		</p:layoutUnit> -->
-
-
 		<p:layoutUnit position="west" size="23%" resizable="true"
 			closable="false" collapsible="true">
-			<!-- 			<DIV align="center"> -->
-			<!-- 				<h:form id="form"> -->
-			<!-- 					<p:calendar value="#{calendarBean.date1}" mode="inline" -->
-			<!-- 						id="inlineCal" locale="es" style="width:16%;" aspectRatio="1.8"/> -->
-
-			<!-- 				</h:form> -->
-			<!-- 			</DIV> -->
 
 			<p:accordionPanel id="acordeon">
 				<p:tab title="Tareas próximas">
@@ -32,20 +18,24 @@
 							id="tareas" paginator="true" rows="5" effectSpeed="fast"
 							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15" type="none"
-							paginatorPosition="bottom">
-
-							<!-- 							<f:facet name="header"> -->
-							<!--                 Tareas -->
-							<!--             </f:facet> -->
-							<p:commandButton icon="ui-icon-calendar"
-								style="width:10%;height:4%" update=":Forma:calendario">
-								<f:setPropertyActionListener value="#{tarea}"
-									target="#{tableBean.tareaSeleccionada}" />
-							</p:commandButton>
-
-							<h:outputText value="#{tarea.nombre}: #{tarea.fecha_formateada}"
-								style="margin-left:2px;font-size:80%" />
-							<br />
+							paginatorPosition="bottom" style="vertical-align:text-top">
+							<p:panelGrid styleClass="pnlTarea">
+								<p:row>
+									<p:column styleClass="clmna">
+										<h:outputText
+											value="#{tarea.nombre}: #{tarea.fecha_formateada}"
+											style="margin-left:2px;font-size:80%" />
+									</p:column>
+									<p:column >
+										<p:commandLink icon="calendarioBtn"
+											style="margin-right:2%" update=":Forma:calendario"> 
+											<f:setPropertyActionListener value="#{tarea}"
+												target="#{tableBean.tareaSeleccionada}" />
+												<h:graphicImage name="imagenes/calendar.png" library="default" />
+										</p:commandLink>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
 						</p:dataList>
 					</h:form>
 				</p:tab>
@@ -56,23 +46,24 @@
 
 		<p:layoutUnit position="center" size="77%">
 			<DIV align="center">
-			<h:form>
+				<h:form>
 
-				<p:growl id="toolbar" />
+					<p:growl id="toolbar" />
 
-				<p:toolbar>
-				    <p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
-				    <p:outputLabel>
+					<p:toolbar>
+						<p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
+							<p:outputLabel>
 				    UBUCalendar - Calendario
 				    </p:outputLabel>
-					</p:toolbarGroup>
-					<p:toolbarGroup align="right" style="margin-right:2%">
-						<p:commandButton value=" Desconectar" icon="ui-icon-power" action="#{adminUserBean.desconectar()}"/>
-					</p:toolbarGroup>
+						</p:toolbarGroup>
+						<p:toolbarGroup align="right" style="margin-right:2%">
+							<p:commandButton value=" Desconectar" icon="ui-icon-power"
+								action="#{adminUserBean.desconectar()}" />
+						</p:toolbarGroup>
 
 
-				</p:toolbar>
-			</h:form>
+					</p:toolbar>
+				</h:form>
 				<h:form id="Forma">
 
 					<p:growl id="messages" showDetail="true" />
@@ -99,7 +90,7 @@
 
 					</p:schedule>
 
-					<p:dialog widgetVar="eventDialog" header="Event Details"
+					<p:dialog widgetVar="eventDialog" header="Detalles del evento"
 						showEffect="clip" hideEffect="clip">
 						<h:panelGrid id="eventDetails" columns="2">
 							<h:outputLabel for="nombre" value="Nombre:" />
@@ -109,12 +100,12 @@
 							<h:outputLabel for="desde" value="Desde:" />
 							<p:calendar id="desde" effect="slideDown"
 								value="#{scheduleController.event.startDate}"
-								pattern="MM/dd/yyyy HH:mm" locale="es" />
+								pattern="dd/MM/yyyy HH:mm" locale="es" />
 
 							<h:outputLabel for="hasta" value="Hasta:" />
 							<p:calendar id="hasta" effect="slideDown"
 								value="#{scheduleController.event.endDate}"
-								pattern="MM/dd/yyyy HH:mm" locale="es" />
+								pattern="dd/MM/yyyy HH:mm" locale="es" />
 
 							<h:outputLabel for="descripción" value="Descripción:" />
 							<p:inputTextarea id="descripción" rows="4" cols="23"
@@ -143,13 +134,13 @@
 						<p:confirmDialog id="confirmDialog"
 							message="¿Está seguro que quiere eliminar el evento?"
 							header="Elininar evento" severity="alert"
-							widgetVar="confirmation"
-							appendToBody="true">
+							widgetVar="confirmation" appendToBody="true">
 
-							<p:commandButton id="confirm" value="Si, estoy seguro" update="mesg, :acordeon:panelTareas:tareas"
+							<p:commandButton id="confirm" value="Si, estoy seguro"
+								update="mesg, :acordeon:panelTareas:tareas"
 								oncomplete="confirmation.hide(), myschedule.update();"
 								process="@this"
-								actionListener="#{scheduleController.deleteEvent}"/>
+								actionListener="#{scheduleController.deleteEvent}" />
 							<p:commandButton id="decline" value="Todavía no"
 								onclick="confirmation.hide()" type="button" />
 
@@ -168,8 +159,20 @@
 .ui-dataList .ui-paginator {
 	font-size: 80%;
 }
-.ui-confirm-dialog, .ui-dialog {
-z-index: 1000000000000;
+
+.ui-confirm-dialog,.ui-dialog {
+	z-index: 1000000000000;
+}
+
+.pnlTarea tr,.pnlTarea td {
+	border: none;
+}
+.clmna {
+	width:90%;
+}
+.classCalendar {
+    background-image: url('/resources/css/imagenes/calendar.png');
+    background-position: 0 0;
 }
 </style>
 	<SCRIPT type="text/javascript">

@@ -15,16 +15,18 @@
 				<p:growl id="toolbar" />
 
 				<p:toolbar>
-				    <p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
-				    <p:outputLabel>
+					<p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
+						<p:outputLabel>
 				    UBUCalendar - Administración
 				    </p:outputLabel>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right" style="margin-right:2%">
-						
-						<p:menuButton value="Opciones" >
-							<p:menuitem value=" Ir al calendario"  icon="ui-icon-calendar" action="#{adminUserBean.irAlCalendario()}"/>
-							<p:menuitem value=" Desconectar" icon="ui-icon-power" action="#{adminUserBean.desconectar()}"/>
+
+						<p:menuButton value="Opciones">
+							<p:menuitem value=" Ir al calendario" icon="ui-icon-calendar"
+								action="#{adminUserBean.irAlCalendario()}" />
+							<p:menuitem value=" Desconectar" icon="ui-icon-power"
+								action="#{adminUserBean.desconectar()}" />
 						</p:menuButton>
 
 					</p:toolbarGroup>
@@ -32,7 +34,7 @@
 
 				</p:toolbar>
 			</h:form>
-			
+
 			<p:tabView id="tabView">
 
 				<p:tab id="tab1" title="Usuarios">
@@ -44,7 +46,7 @@
 							value="#{adminUserBean.listaUsuarios}" editable="true"
 							widgetVar="userTable" paginator="true"
 							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
-							rows="25" type="none" paginatorPosition="bottom">
+							rows="13" type="none" paginatorPosition="bottom" style="margin-bottom:1%">
 
 
 							<p:ajax event="rowEdit" listener="#{adminUserBean.onEdit}"
@@ -104,16 +106,16 @@
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
 									action="#{adminUserBean.onDelete(usuario.id)}"
-								    update=":tabView:form:user">
-									
-									</p:commandLink>
+									update=":tabView:form:user">
+
+								</p:commandLink>
 							</p:column>
 						</p:dataTable>
 
 						<p:commandLink id="add"
 							actionListener="#{adminUserBean.anadirUsuario}"
 							value="Añadir usuario" update=":tabView:form:user"
-							oncomplete="editLastDatatableRow('classUser');">
+							oncomplete="editLastDatatableRow('classUser');" styleClass="cmdLink">
 						</p:commandLink>
 
 					</h:form>
@@ -129,7 +131,7 @@
 							value="#{adminEventoBean.listaTareas}" editable="true"
 							widgetVar="eveTable" styleClass="classEvento" paginator="true"
 							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
-							rows="25" type="none" paginatorPosition="bottom">
+							rows="13" type="none" paginatorPosition="bottom" style="margin-bottom:1%">
 
 							<p:ajax event="rowEdit" listener="#{adminEventoBean.onEdit}"
 								update=":tabView:formEvento:messagesEventos" />
@@ -227,7 +229,7 @@
 						<p:commandLink id="add"
 							actionListener="#{adminEventoBean.anadirEvento}"
 							value="Añadir evento" update=":tabView:formEvento:eve"
-							oncomplete="editLastDatatableRow('classEvento');">
+							oncomplete="editLastDatatableRow('classEvento');" styleClass="cmdLink" style="margin-top:5%">
 						</p:commandLink>
 
 
@@ -241,7 +243,7 @@
 		</p:layoutUnit>
 
 	</p:layout>
-	<SCRIPT type="text/javascript">
+	<script type="text/javascript">
 		PrimeFaces.locales['es'] = {
 			closeText : 'Hecho',
 			prevText : 'Anterior',
@@ -272,9 +274,8 @@
 			day : 'Día',
 			allDayText : 'Todo el día'
 		};
-	</SCRIPT>
-
-	<script type="text/javascript">
+	</script>
+	<script>
 		function editLastDatatableRow(name) {
 
 			jQuery('.' + name + ' tr').last().find('span.ui-icon-pencil').each(
@@ -282,6 +283,18 @@
 						jQuery(this).click()
 					});
 		}
-	</script>
+	</script >
+	<style type="text/css">
+	.cmdLink {
+	text-decoration: none;
+	color: blue;
+}
+
+.cmdLink:hover {
+	text-decoration: underline;
+	color: blue;
+}
+	
+</style>
 </h:body>
 </html>

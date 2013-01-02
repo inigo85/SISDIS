@@ -13,28 +13,88 @@
 		<p:layoutUnit position="center" size="77%">
 			<h:form>
 
-				<p:panel position="north" size="15%">
+				<p:panel size="15%">
 	UBUCalendar
 	</p:panel>
-				<p:panel id="panel" header="Login" style="margin-bottom:10px;">
+				<p:panel id="panel" header="Acceso al sistema"
+					style="margin-top:2%;margin-left:30%;margin-right:30%;width:40%">
 					<p:messages id="message" autoUpdate="true" />
-					<h:panelGrid columns="2">
-						<h:outputText value="Usuario: " />
-						<p:inputText id="login" name="nombre" value="#{UserBean.login}"
-							required="true" label="Nombre"></p:inputText>
-						<h:outputLabel value="Contraseña: " />
-						<p:password id="pass" value="#{UserBean.password}" required="true"
-							label="Contraseña" />
-						<p:commandButton value="Entrar" type="submit"
-							action="#{UserBean.obtainLogin}" update="panel" />
-						<p:commandButton value="Cancelar" type="reset" />
-							<p:commandLink id="registro" value="Registro" immediate="true"
-								action="#{UserBean.mostrarFormularioRegistro}" />
-					</h:panelGrid>
+					<p:panelGrid styleClass="pnlGridLogin">
+						<p:row>
+							<p:column colspan="2">
+								<p:spacer width="2%" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Usuario" />
+							</p:column>
+							<p:column styleClass="columnaLogin">
+								<p:inputText id="login" name="nombre" value="#{UserBean.login}"
+									required="true" label="Nombre"
+									style="width:80%;margin-bottom:5%" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Contraseña" />
+							</p:column>
+							<p:column styleClass="columnaLogin">
+								<p:password id="pass" value="#{UserBean.password}"
+									required="true" label="Contraseña"
+									style="width:80%;margin-bottom:5%" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:commandButton value="Entrar" type="submit"
+									action="#{UserBean.obtainLogin}" update="panel"
+									style="margin-left:23%" />
+								<p:commandButton value="Cancelar" type="reset"
+									style="margin-left:3%" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:spacer width="2%" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:commandLink id="registro" immediate="true"
+									style="margin-top:30%;margin-left:23%;color: blue"
+									action="#{UserBean.mostrarFormularioRegistro}"
+									styleClass="cmdLink">
+									<h:outputText value="Registrarse en el sistema" />
+								</p:commandLink>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
 				</p:panel>
 			</h:form>
 
 		</p:layoutUnit>
 	</p:layout>
+	<style type="text/css">
+.pnlGridLogin tr,.pnlGridLogin td {
+	border: none;
+	vertical-align: text-top;
+}
+
+.columnaLogin {
+	width: 90%;
+	vertical-align: middle;
+}
+
+.cmdLink {
+	text-decoration: none;
+	color: blue;
+}
+
+.cmdLink:hover {
+	text-decoration: underline;
+	color: blue;
+}
+</style>
 </h:body>
 </html>
