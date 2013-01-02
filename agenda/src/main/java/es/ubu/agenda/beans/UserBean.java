@@ -3,11 +3,14 @@ package es.ubu.agenda.beans;
 import java.io.Serializable;
 import java.sql.SQLException;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
+
+import org.primefaces.context.RequestContext;
 
 import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
@@ -114,18 +117,29 @@ public class UserBean implements Serializable{
 		  setId(Integer.valueOf(usuario.getId()));
 		  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", getId());
 		  if(usuario.getTipo()=='A' || usuario.getTipo()=='a')
-		    return "admin";
+			return "admin.xhtml?faces-redirect=true";
 		  else
-			return "ok";
+			return "main.xhtml?faces-redirect=true";
           
 		}
+		FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario no registrado en el sistema", null);
+	    FacesContext.getCurrentInstance().addMessage(null, msg);
 		return "failed";
+	}
+	
+	public void mostrarMensaje(){
+		FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario registrado correctamente en el sistema", null);
+	    FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	
 	public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "logout";
+		return "login.xhtml?faces-redirect=true";
     }
+	
+	public String mostrarFormularioRegistro(){
+		return "registro.xhtml?faces-redirect=true";
+	}
 	
 	
 }

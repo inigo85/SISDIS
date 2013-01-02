@@ -16,9 +16,8 @@
 				<p:panel position="north" size="15%">
 	UBUCalendar
 	</p:panel>
-
 				<p:panel id="panel" header="Login" style="margin-bottom:10px;">
-					<p:messages id="message" />
+					<p:messages id="message" autoUpdate="true" />
 					<h:panelGrid columns="2">
 						<h:outputText value="Usuario: " />
 						<p:inputText id="login" name="nombre" value="#{UserBean.login}"
@@ -29,36 +28,11 @@
 						<p:commandButton value="Entrar" type="submit"
 							action="#{UserBean.obtainLogin}" update="panel" />
 						<p:commandButton value="Cancelar" type="reset" />
-						<p:commandLink id="registro" value="Registro" onclick="pnlRegistro.show();"/>
-					</h:panelGrid>
-				</p:panel>
-				</h:form>
-				<h:form>
-				<p:panel header="Registro" autoUpdate="true" visible="false" widgetVar="pnlRegistro">
-					<h:panelGrid columns="3">
-						<h:outputText value="Nombre usuario: " />
-						<p:inputText id="nUsuario" name="nombre"
-							value="#{registroBean.nombre}" required="true" label="Nombre"></p:inputText>
-							<p:message  for="nUsuario" />
-						<h:outputLabel for="pwd1" value="Contraseña: " />
-						<p:password id="pwd1" value="#{registroBean.contraseña}"
-							match="pwd2" label="Password 1" required="true" feedback="true"/>
-							<p:message  for="pwd1" />
-
-						<h:outputLabel for="pwd2" value="Confirma contraseña: " />
-						<p:password id="pwd2" label="Password 2" required="true" />
-						<p:message  for="pwd2" />
-						<h:outputText value="Email: " />
-						<p:inputText id="email" name="email"
-							value="#{registroBean.email}" required="true" label="Email"></p:inputText>
-							<p:message  for="email" />
-							<p:commandButton value="Guardar" type="submit" action="#{registroBean.registrarUsuario}" />
-						<p:commandButton value="Cancelar" type="reset" />
+							<p:commandLink id="registro" value="Registro" immediate="true"
+								action="#{UserBean.mostrarFormularioRegistro}" />
 					</h:panelGrid>
 				</p:panel>
 			</h:form>
-
-
 
 		</p:layoutUnit>
 	</p:layout>

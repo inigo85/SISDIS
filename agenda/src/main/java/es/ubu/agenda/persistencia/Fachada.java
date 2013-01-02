@@ -3,7 +3,9 @@ package es.ubu.agenda.persistencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +46,13 @@ public class Fachada {
 		Usuario usu=null;
 		try {
 			conn = ds.getConnection();
-			String sql;
-			usu=new Usuario();
+			String sql;			
 			sql = "SELECT * FROM usuario WHERE nombre='" + usuario
 					+ "' AND contraseña='" + contrasena + "';";
 			st = conn.prepareStatement(sql);
 			rs = st.executeQuery();
 			if (rs.next()){
+				usu=new Usuario();
 				usu.setId(rs.getString("id"));
 				usu.setTipo(rs.getString("tipo").charAt(0));
 				usu.setNombre(rs.getString("nombre"));
@@ -137,7 +139,7 @@ public class Fachada {
 			conn = ds.getConnection();
 			listaTareas=new ArrayList<Tarea>();
 			String sql;
-			sql = "SELECT * FROM tarea WHERE idUsuario="+idUsuario+" ORDER BY fecha_inicio";
+			sql = "SELECT * FROM tarea WHERE idUsuario="+idUsuario+" AND fecha_inicio>='"+new Timestamp(new Date().getTime())+"' ORDER BY fecha_inicio";
 			st = conn.prepareStatement(sql);
 			rs = st.executeQuery();
 			while (rs.next()){

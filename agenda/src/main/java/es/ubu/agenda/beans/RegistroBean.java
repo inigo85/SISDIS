@@ -1,10 +1,15 @@
 package es.ubu.agenda.beans;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import javax.annotation.ManagedBean;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
+
+import org.primefaces.context.RequestContext;
 
 import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
@@ -16,14 +21,7 @@ public class RegistroBean implements Serializable{
 	private String nombre;
 	private String contraseña;
 	private String email;
-	private boolean visible;
 	
-	public boolean isVisible() {
-		return visible;
-	}
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -43,7 +41,7 @@ public class RegistroBean implements Serializable{
 		this.email = email;
 	}
 	
-	public void registrarUsuario() throws NamingException{
+	public String registrarUsuario() throws NamingException{
 		Fachada fachada;
 		Usuario usuario=new Usuario();
 		usuario.setContrasena(contraseña);
@@ -52,6 +50,18 @@ public class RegistroBean implements Serializable{
 		usuario.setTipo('N');
 		fachada=Fachada.getInstance();
 		fachada.insertarUsuario(usuario);
+		mostrarMensaje();
+		return "loginPage";
+	}
+	
+	
+	private void mostrarMensaje() {
+		ExternalContext tmpEC;
+	    Map sMap;
+	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
+	    sMap = tmpEC.getSessionMap();
+	    UserBean user = (UserBean) sMap.get("UserBean");
+	    user.mostrarMensaje();
 	}
 	
 }

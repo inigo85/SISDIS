@@ -8,7 +8,7 @@
 </h:head>
 <h:body>
 
-	<p:layout fullPage="true">
+	<p:layout fullPage="true" id="lay">
 		<p:layoutUnit position="center">
 			<h:form>
 
@@ -32,6 +32,7 @@
 
 				</p:toolbar>
 			</h:form>
+			
 			<p:tabView id="tabView">
 
 				<p:tab id="tab1" title="Usuarios">
@@ -103,7 +104,9 @@
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
 									action="#{adminUserBean.onDelete(usuario.id)}"
-									oncomplete="userTable.update();" update=":tabView:form:user" />
+								    update=":tabView:form:user">
+									
+									</p:commandLink>
 							</p:column>
 						</p:dataTable>
 
@@ -216,7 +219,6 @@
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
 									action="#{adminEventoBean.onDelete(evento.id)}"
-									oncomplete="eveTable.update();"
 									update=":tabView:formEvento:eve" />
 							</p:column>
 

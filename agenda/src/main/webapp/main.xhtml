@@ -14,6 +14,7 @@
 		<!-- 			closable="false" collapsible="true"> -->
 		<!-- 		</p:layoutUnit> -->
 
+
 		<p:layoutUnit position="west" size="23%" resizable="true"
 			closable="false" collapsible="true">
 			<!-- 			<DIV align="center"> -->
@@ -28,32 +29,6 @@
 				<p:tab title="Tareas próximas">
 					<h:form id="panelTareas" style="width:130%;margin-left:-15%">
 						<p:dataList value="#{tableBean.listaTareas}" var="tarea"
-							id="tareas" paginator="true" rows="5" effectSpeed="fast"
-							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
-							rowsPerPageTemplate="5,10,15" type="none"
-							paginatorPosition="bottom">
-
-							<!-- 							<f:facet name="header"> -->
-							<!--                 Tareas -->
-							<!--             </f:facet> -->
-							<p:commandButton icon="ui-icon-calendar"
-								style="width:10%;height:4%" update=":Forma:calendario">
-								<f:setPropertyActionListener value="#{tarea}"
-									target="#{tableBean.tareaSeleccionada}" />
-							</p:commandButton>
-
-							<h:outputText value="#{tarea.nombre}: #{tarea.fecha_formateada}"
-								style="margin-left:2px;font-size:80%" />
-							<br />
-						</p:dataList>
-					</h:form>
-				</p:tab>
-			</p:accordionPanel>
-			
-			<p:accordionPanel id="acordeonAntiguas">
-				<p:tab title="Tareas pasadas">
-					<h:form id="panelTareasAntiguas" style="width:130%;margin-left:-15%">
-						<p:dataList value="#{tableBean.listaTareasAntiguas}" var="tarea"
 							id="tareas" paginator="true" rows="5" effectSpeed="fast"
 							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15" type="none"
@@ -105,7 +80,7 @@
 					<p:schedule id="calendario"
 						value="#{scheduleController.eventModel}"
 						view="#{scheduleController.vistaCalendario}" locale="es"
-						widgetVar="myschedule" style="width:96%;" aspectRatio="1.8"
+						widgetVar="myschedule" style="width:96%;" aspectRatio="2.05"
 						initialDate="#{scheduleController.fechaSeleccionada}"
 						firstHour="#{scheduleController.hora}">
 
