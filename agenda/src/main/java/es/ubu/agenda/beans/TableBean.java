@@ -45,11 +45,16 @@ public class TableBean implements Serializable{
 	public TableBean() throws NamingException{
 		fachada=Fachada.getInstance();
 		actualizarLista();
+		actualizarListaAntiguas();
 		
 	}
 
 	public void actualizarLista() throws NamingException {
-		listaTareas=fachada.obenerTareas(Fachada.getInstance().obtenerIdUsuario());
+		listaTareas=fachada.obenerTareas(Fachada.getInstance().obtenerIdUsuario(),true);
+	}
+	
+	public void actualizarListaAntiguas() throws NamingException {
+		listaTareasAntiguas=fachada.obenerTareas(Fachada.getInstance().obtenerIdUsuario(),false);
 	}
 	
 	public List<Tarea> getListaTareas() {

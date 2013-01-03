@@ -106,7 +106,8 @@ public class ScheduleController implements Serializable{
 	public ScheduleController() throws NamingException {
 		eventModel = new DefaultScheduleModel() ;
 		fachada=Fachada.getInstance();
-		List<Tarea> lista=fachada.obenerTareas(fachada.obtenerIdUsuario());
+		List<Tarea> lista=fachada.obenerTareas(fachada.obtenerIdUsuario(),true);
+		lista.addAll(fachada.obenerTareas(fachada.obtenerIdUsuario(),false));
 		this.setVistaCalendario("month");
 		this.setFechaSeleccionada(new Date());
 		this.setHora(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
@@ -157,6 +158,7 @@ public class ScheduleController implements Serializable{
 		sMap = tmpEC.getSessionMap();
 		TableBean tb = (TableBean) sMap.get("tableBean");
 		tb.actualizarLista();
+		tb.actualizarListaAntiguas();
 	}
 	
 	public void deleteEvent(ActionEvent actionEvent) throws NamingException{

@@ -129,17 +129,20 @@ public class Fachada {
 	}
 	
 	
-	public List<Tarea> obenerTareas(int idUsuario){
+	public List<Tarea> obenerTareas(int idUsuario, boolean próximas){
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement st = null;
 		List<Tarea> listaTareas = null;
+		String operador=">=";
 		boolean ok = false;
 		try {
 			conn = ds.getConnection();
 			listaTareas=new ArrayList<Tarea>();
 			String sql;
-			sql = "SELECT * FROM tarea WHERE idUsuario="+idUsuario+" AND fecha_inicio>='"+new Timestamp(new Date().getTime())+"' ORDER BY fecha_inicio";
+			if(!próximas)
+				operador="<";
+			sql = "SELECT * FROM tarea WHERE idUsuario="+idUsuario+" AND fecha_inicio"+operador+"'"+new Timestamp(new Date().getTime())+"' ORDER BY fecha_inicio";
 			st = conn.prepareStatement(sql);
 			rs = st.executeQuery();
 			while (rs.next()){
