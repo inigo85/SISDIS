@@ -7,8 +7,8 @@
 
 </h:head>
 <h:body>
-<p:panel style="width:100%">
-	<p:panelGrid styleClass="pnlMain">
+<p:panel styleClass="pantel">
+	<p:panelGrid styleClass="pnlMain" >
 		<p:row>
 			<p:column colspan="2" styleClass="colll">
 				<h:form>
@@ -36,10 +36,10 @@
 		</p:row>
 		<p:row>
 			<p:column styleClass="clmnaMain">
-				<p:accordionPanel id="acordeonPasadas" activeIndex="-1">
+				<p:accordionPanel id="acordeonPasadas" activeIndex="-1" >
 					<p:tab title="Tareas pasadas">
 						<h:form id="panelTareasPasadas"
-							style="margin-left:-15%">
+							>
 							<p:dataList value="#{tableBean.listaTareasAntiguas}" var="tarea"
 								id="tareasPasadas" paginator="true" rows="5" effectSpeed="fast"
 								paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
@@ -50,7 +50,7 @@
 										<p:column styleClass="clmna">
 											<h:outputText
 												value="#{tarea.nombre}: #{tarea.fecha_formateada}"
-												style="margin-left:2px;font-size:80%" />
+												style="font-size:80%" />
 										</p:column>
 										<p:column>
 											<p:commandLink icon="calendarioBtn" title="Ver en calendario"
@@ -70,7 +70,7 @@
 
 				<p:accordionPanel id="acordeon">
 					<p:tab title="Tareas próximas">
-						<h:form id="panelTareas" style="margin-left:-15%">
+						<h:form id="panelTareas" >
 							<p:dataList value="#{tableBean.listaTareas}" var="tarea"
 								id="tareas" paginator="true" rows="5" effectSpeed="fast"
 								paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
@@ -81,7 +81,7 @@
 										<p:column styleClass="clmna">
 											<h:outputText
 												value="#{tarea.nombre}: #{tarea.fecha_formateada}"
-												style="margin-left:2px;font-size:80%" />
+												style="font-size:80%" />
 										</p:column>
 										<p:column>
 											<p:commandLink icon="calendarioBtn" title="Ver en calendario"
@@ -111,7 +111,7 @@
 						view="#{scheduleController.vistaCalendario}" locale="es"
 						widgetVar="myschedule" 
 						initialDate="#{scheduleController.fechaSeleccionada}"
-						firstHour="#{scheduleController.hora}">
+						firstHour="#{scheduleController.hora}" style="width:96%" aspectRatio="2.05" styleClass="schedule">
 
 						<p:ajax event="dateSelect"
 							listener="#{scheduleController.onDateSelect}"
@@ -203,25 +203,40 @@
 .pnlTarea tr,.pnlTarea td {
 	border: none;
 }
-.pnlMain tr,.pnlMain td {
-	vertical-align: text-top;
 
+
+.pnlMain {
+	width:100%;
 }
+.fc-border-separate tr,.fc-border-separate td {
+	border-color: red;
+}
+
+.fc-header tr,.fc-header td {
+	border: none;
+}
+
 .clmnaMain {
-	width: 30%;
-	min-width:30%;
+	vertical-align:text-top;
+	width:25%;
+	
 
 }
 .clmna {
-	width: 10%;
+	
 }
 .calendarioMain {
-	width: 70%;
-	min-width:70%;
+	width:75%;
+	border:none;
 }
-.colll {
-	width: 100%;
 
+td.clmnaMain {
+	border:none;
+}
+
+.pantel {
+	width:100%;
+	border:none;
 }
 
 .btnCalendar {
@@ -234,6 +249,7 @@
 	border-width: 1px;
 	border-color: grey;
 }
+
 </style>
 	<SCRIPT type="text/javascript">
 		PrimeFaces.locales['es'] = {

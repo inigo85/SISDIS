@@ -115,7 +115,8 @@
 						<p:commandLink id="add"
 							actionListener="#{adminUserBean.anadirUsuario}"
 							value="Añadir usuario" update=":tabView:form:user"
-							oncomplete="editLastDatatableRow('classUser');" styleClass="cmdLink">
+							oncomplete="editLastDatatableRow('classUser');" styleClass="cmdLink"
+							style="color: blue">
 						</p:commandLink>
 
 					</h:form>
@@ -229,7 +230,7 @@
 						<p:commandLink id="add"
 							actionListener="#{adminEventoBean.anadirEvento}"
 							value="Añadir evento" update=":tabView:formEvento:eve"
-							oncomplete="editLastDatatableRow('classEvento');" styleClass="cmdLink" style="margin-top:5%">
+							oncomplete="editLastDatatableRow('classEvento');" styleClass="cmdLink" style="margin-top:5%;color: blue">
 						</p:commandLink>
 
 
