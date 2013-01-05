@@ -20,6 +20,15 @@ public class AdminUserBean implements Serializable{
 	private List<Usuario> listaUsuarios;
 	private List<Usuario> listaFiltrada;
 	private Fachada fachada;
+	private String usuario_id;
+
+	public String getUsuario_id() {
+		return usuario_id;
+	}
+
+	public void setUsuario_id(String usuario_id) {
+		this.usuario_id = usuario_id;
+	}
 	
 	public AdminUserBean() throws NamingException{
 		fachada=Fachada.getInstance();

@@ -12,12 +12,23 @@
 
 	<h:form>
 
-		<p:panel styleClass="ui-widget-header">
-			<h:graphicImage name="imagenes/icon.png" library="default"
-				style="vertical-align:bottom" />
-			<p:outputLabel value="UBUCalendar" styleClass="ui-widget-header" style="border:none;margin-left:1%;font-size:140%;vertical-align:middle"
-				/>
-		</p:panel>
+				<p:toolbar style="margin-bottom:-1.2%">
+					<p:toolbarGroup align="left" style="margin-left:1%;vertical-align:middle">
+						<h:graphicImage name="imagenes/icon.png" library="default"
+							style="margin-left:2%" />
+					</p:toolbarGroup>
+					<p:toolbarGroup style="margin-left:1%;margin-top:0.28%">
+						<p:outputLabel value="UBUCalendar"
+							style="border:none;margin-left:1%;font-size:140%" />
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right" style="vertical-align:middle;margin-right:2%">
+						<p:themeSwitcher  id="defaultSwitcher">
+							<f:selectItem itemLabel="Cambiar tema" itemValue="" />
+							<f:selectItems value="#{themeSwitcherBean.themes}" />
+						</p:themeSwitcher>
+					</p:toolbarGroup>
+					
+				</p:toolbar>
 		<p:panel id="panel"
 			style="margin-top:2%;margin-left:30%;margin-right:30%;width:40%">
 			<p:messages id="message" autoUpdate="true" />

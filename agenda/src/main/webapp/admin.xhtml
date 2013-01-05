@@ -14,12 +14,17 @@
 
 				<p:growl id="toolbar" />
 
-				<p:toolbar>
-					<p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
-						<p:outputLabel>
-				    UBUCalendar - Administración
-				    </p:outputLabel>
+
+				<p:toolbar style="margin-bottom:-1.2%">
+					<p:toolbarGroup align="left" style="margin-left:1%;margin-top:0.3%">
+						<h:graphicImage name="imagenes/icon.png" library="default"
+							style="margin-left:2%" />
 					</p:toolbarGroup>
+					<p:toolbarGroup style="margin-left:1%;margin-top:0.5%">
+						<p:outputLabel value="UBUCalendar"
+							style="border:none;margin-left:1%;font-size:140%" />
+					</p:toolbarGroup>
+					
 					<p:toolbarGroup align="right" style="margin-right:2%">
 
 						<p:menuButton value="Opciones">
@@ -30,9 +35,16 @@
 						</p:menuButton>
 
 					</p:toolbarGroup>
-
-
+					<p:toolbarGroup align="right" style="margin-top:0.4%;margin-right:2%">
+						<p:themeSwitcher  id="defaultSwitcher">
+							<f:selectItem itemLabel="Cambiar tema" itemValue="" />
+							<f:selectItems value="#{themeSwitcherBean.themes}" />
+						</p:themeSwitcher>
+					</p:toolbarGroup>
+					
 				</p:toolbar>
+					
+
 			</h:form>
 
 			<p:tabView id="tabView">
@@ -105,8 +117,8 @@
 								<p:rowEditor />
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
-									action="#{adminUserBean.onDelete(usuario.id)}"
-									update=":tabView:form:user">
+									actionListener="#{adminUserBean.setUsuario_id(usuario.id)}"
+									onclick="confirmationEve.show()">
 
 								</p:commandLink>
 							</p:column>
@@ -118,7 +130,33 @@
 							oncomplete="editLastDatatableRow('classUser');" styleClass="cmdLink"
 							style="color: blue">
 						</p:commandLink>
+						
+						<h:form prependId="false">
 
+						<p:growl id="mesgEve" />
+
+						<h:panelGrid columns="1" cellpadding="5">
+							<h:outputText id="msgEvento" value="#{buttonBean.text}" />
+						</h:panelGrid>
+
+						<p:confirmDialog id="confirmDialog"
+							message="¿Está seguro que quiere eliminar el usuario?"
+							header="Elininar usuario" severity="alert"
+							widgetVar="confirmationEve" appendToBody="true">
+
+							<p:commandButton id="confirm" value="Si, estoy seguro"
+								update="mesgEve, :tabView:form:user"
+								oncomplete="confirmationEve.hide()"
+								process="@this"
+								actionListener="#{adminUserBean.onDelete(adminUserBean.getUsuario_id())}"
+								 />
+							<p:commandButton id="decline" value="Todavía no"
+								onclick="confirmationEve.hide()" type="button" />
+
+						</p:confirmDialog>
+
+					</h:form>
+						
 					</h:form>
 
 				</p:tab>
@@ -221,8 +259,8 @@
 								<p:rowEditor />
 								<p:commandLink id="deleteLink"
 									styleClass="ui-icon ui-icon-trash"
-									action="#{adminEventoBean.onDelete(evento.id)}"
-									update=":tabView:formEvento:eve" />
+									onclick="confirmation.show()"
+									actionListener="#{adminEventoBean.setEvento_id(evento.id)}"/>
 							</p:column>
 
 						</p:dataTable>
@@ -232,7 +270,32 @@
 							value="Añadir evento" update=":tabView:formEvento:eve"
 							oncomplete="editLastDatatableRow('classEvento');" styleClass="cmdLink" style="margin-top:5%;color: blue">
 						</p:commandLink>
+						
+						<h:form prependId="false">
 
+						<p:growl id="mesgUsu" />
+
+						<h:panelGrid columns="1" cellpadding="5">
+							<h:outputText id="msg" value="#{buttonBean.text}" />
+						</h:panelGrid>
+
+						<p:confirmDialog id="confirmDialog"
+							message="¿Está seguro que quiere eliminar el usuario?"
+							header="Elininar evento" severity="alert"
+							widgetVar="confirmation" appendToBody="true">
+
+							<p:commandButton id="confirm" value="Si, estoy seguro"
+								update="mesgUsu, :tabView:formEvento:eve"
+								oncomplete="confirmation.hide()"
+								process="@this"
+								actionListener="#{adminEventoBean.onDelete(adminEventoBean.getEvento_id())}"
+								 />
+							<p:commandButton id="decline" value="Todavía no"
+								onclick="confirmation.hide()" type="button" />
+
+						</p:confirmDialog>
+
+					</h:form>
 
 					</h:form>
 
@@ -242,7 +305,7 @@
 			</p:tabView>
 
 		</p:layoutUnit>
-
+		
 	</p:layout>
 	<script type="text/javascript">
 		PrimeFaces.locales['es'] = {

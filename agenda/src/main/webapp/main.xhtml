@@ -7,100 +7,105 @@
 
 </h:head>
 <h:body>
-<p:panel styleClass="pantel">
-	<p:panelGrid styleClass="pnlMain" >
-		<p:row>
-			<p:column colspan="2" styleClass="colll">
-				<h:form>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north">
+			<h:form>
 
-					<p:growl id="toolbar" />
+				<p:toolbar style="margin-bottom:-1.2%">
+					<p:toolbarGroup align="left" style="margin-left:1%">
+						<h:graphicImage name="imagenes/icon.png" library="default"
+							style="margin-top:20%;margin-left:2%" />
+					</p:toolbarGroup>
+					<p:toolbarGroup style="margin-top:0.7%;margin-left:1%">
+						<p:outputLabel value="UBUCalendar"
+							style="border:none;margin-left:1%;font-size:140%" />
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right" style="margin-left:2%;margin-right:0.5%">
+						<p:commandButton value=" Desconectar" icon="ui-icon-power"
+							action="#{adminUserBean.desconectar()}" />
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right" style="margin-top:0.5%">
+						<p:themeSwitcher  id="defaultSwitcher">
+							<f:selectItem itemLabel="Cambiar tema" itemValue="" />
+							<f:selectItems value="#{themeSwitcherBean.themes}" />
+						</p:themeSwitcher>
+					</p:toolbarGroup>
+					
 
-					<p:toolbar>
-						<p:toolbarGroup style="margin-top:0.8%;margin-left:37%">
-							<h:graphicImage name="imagenes/icon.png" library="default"
-								style="vertical-align:bottom" />
-						</p:toolbarGroup>
-						<p:toolbarGroup>
-							<p:outputLabel value="UBUCalendar" styleClass="ui-widget-header"
-								style="border:none;margin-left:1%;font-size:140%;vertical-align:middle" />
-						</p:toolbarGroup>
-						<p:toolbarGroup align="right" style="margin-right:2%">
-							<p:commandButton value=" Desconectar" icon="ui-icon-power"
-								action="#{adminUserBean.desconectar()}" />
-						</p:toolbarGroup>
+
+				</p:toolbar>
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" size="23%" resizable="true"
+			closable="false" collapsible="true">
+			<p:accordionPanel id="acordeonPasadas" activeIndex="-1">
+				<p:tab title="Tareas pasadas">
+					<h:form id="panelTareasPasadas" style="width:130%;margin-left:-15%">
+						<p:dataList value="#{tableBean.listaTareasAntiguas}" var="tarea"
+							id="tareasPasadas" paginator="true" rows="5" effectSpeed="fast"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" type="none"
+							paginatorPosition="bottom" style="vertical-align:text-top">
+							<p:panelGrid styleClass="pnlTarea">
+								<p:row>
+									<p:column styleClass="clmna">
+										<h:outputText
+											value="#{tarea.nombre} - #{tarea.fecha_formateada}"
+											style="font-size:80%" />
+									</p:column>
+									<p:column>
+										<p:commandLink icon="calendarioBtn" title="Ver en calendario"
+											update=":Forma:calendario">
+											<f:setPropertyActionListener value="#{tarea}"
+												target="#{tableBean.tareaSeleccionada}" />
+											<h:graphicImage name="imagenes/calendar.png"
+												library="default" styleClass="btnCalendar" />
+										</p:commandLink>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:dataList>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
+			<p:accordionPanel id="acordeon">
+				<p:tab title="Tareas próximas">
+					<h:form id="panelTareas" style="width:130%;margin-left:-15%">
+						<p:dataList value="#{tableBean.listaTareas}" var="tarea"
+							id="tareas" paginator="true" rows="5" effectSpeed="fast"
+							paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" type="none"
+							paginatorPosition="bottom" style="vertical-align:text-top">
+							<p:panelGrid styleClass="pnlTarea">
+								<p:row>
+									<p:column styleClass="clmna">
+										<h:outputText
+											value="#{tarea.nombre} - #{tarea.fecha_formateada}"
+											style="margin-left:2px;font-size:80%" />
+									</p:column>
+									<p:column>
+										<p:commandLink icon="calendarioBtn" style="margin-right:2%"
+											update=":Forma:calendario">
+											<f:setPropertyActionListener value="#{tarea}"
+												target="#{tableBean.tareaSeleccionada}" />
+											<h:graphicImage name="imagenes/calendar.png"
+												library="default" styleClass="btnCalendar" />
+										</p:commandLink>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:dataList>
+					</h:form>
+				</p:tab>
+			</p:accordionPanel>
 
 
-					</p:toolbar>
-				</h:form>
-			</p:column>
-		</p:row>
-		<p:row>
-			<p:column styleClass="clmnaMain">
-				<p:accordionPanel id="acordeonPasadas" activeIndex="-1" >
-					<p:tab title="Tareas pasadas">
-						<h:form id="panelTareasPasadas"
-							>
-							<p:dataList value="#{tableBean.listaTareasAntiguas}" var="tarea"
-								id="tareasPasadas" paginator="true" rows="5" effectSpeed="fast"
-								paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
-								rowsPerPageTemplate="5,10,15" type="none"
-								paginatorPosition="bottom" style="vertical-align:text-top">
-								<p:panelGrid styleClass="pnlTarea">
-									<p:row>
-										<p:column styleClass="clmna">
-											<h:outputText
-												value="#{tarea.nombre}: #{tarea.fecha_formateada}"
-												style="font-size:80%" />
-										</p:column>
-										<p:column>
-											<p:commandLink icon="calendarioBtn" title="Ver en calendario"
-												update=":Forma:calendario">
-												<f:setPropertyActionListener value="#{tarea}"
-													target="#{tableBean.tareaSeleccionada}" />
-												<h:graphicImage name="imagenes/calendar.png"
-													library="default" styleClass="btnCalendar" />
-											</p:commandLink>
-										</p:column>
-									</p:row>
-								</p:panelGrid>
-							</p:dataList>
-						</h:form>
-					</p:tab>
-				</p:accordionPanel>
+		</p:layoutUnit>
 
-				<p:accordionPanel id="acordeon">
-					<p:tab title="Tareas próximas">
-						<h:form id="panelTareas" >
-							<p:dataList value="#{tableBean.listaTareas}" var="tarea"
-								id="tareas" paginator="true" rows="5" effectSpeed="fast"
-								paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink} {RowsPerPageDropdown}"
-								rowsPerPageTemplate="5,10,15" type="none"
-								paginatorPosition="bottom" style="vertical-align:text-top">
-								<p:panelGrid styleClass="pnlTarea">
-									<p:row>
-										<p:column styleClass="clmna">
-											<h:outputText
-												value="#{tarea.nombre}: #{tarea.fecha_formateada}"
-												style="font-size:80%" />
-										</p:column>
-										<p:column>
-											<p:commandLink icon="calendarioBtn" title="Ver en calendario"
-												update=":Forma:calendario">
-												<f:setPropertyActionListener value="#{tarea}"
-													target="#{tableBean.tareaSeleccionada}" />
-												<h:graphicImage name="imagenes/calendar.png"
-													library="default" styleClass="btnCalendar" />
-											</p:commandLink>
-										</p:column>
-									</p:row>
-								</p:panelGrid>
-							</p:dataList>
-						</h:form>
-					</p:tab>
-				</p:accordionPanel>
-			</p:column>
-
-			<p:column styleClass="calendarioMain">
+		<p:layoutUnit position="center" size="77%">
+			<div align="center">
 
 				<h:form id="Forma">
 
@@ -109,9 +114,9 @@
 					<p:schedule id="calendario"
 						value="#{scheduleController.eventModel}"
 						view="#{scheduleController.vistaCalendario}" locale="es"
-						widgetVar="myschedule" 
+						widgetVar="myschedule" style="width:97.5%;" aspectRatio="2.15"
 						initialDate="#{scheduleController.fechaSeleccionada}"
-						firstHour="#{scheduleController.hora}" style="width:96%" aspectRatio="2.05" styleClass="schedule">
+						firstHour="#{scheduleController.hora}">
 
 						<p:ajax event="dateSelect"
 							listener="#{scheduleController.onDateSelect}"
@@ -121,10 +126,10 @@
 							update="eventDetails" oncomplete="eventDialog.show()" />
 						<p:ajax event="eventMove"
 							listener="#{scheduleController.onEventMove}"
-							update="messages, :acordeon:panelTareas:tareas :acordeonPasadas:panelTareasPasadas:tareasPasadas" />
+							update="messages, :acordeon:panelTareas:tareas" />
 						<p:ajax event="eventResize"
 							listener="#{scheduleController.onEventResize}"
-							update="messages, :acordeon:panelTareas:tareas :acordeonPasadas:panelTareasPasadas:tareasPasadas" />
+							update="messages, :acordeon:panelTareas:tareas" />
 
 					</p:schedule>
 
@@ -157,7 +162,7 @@
 							<p:commandButton value="Guardar"
 								actionListener="#{scheduleController.addEvent}"
 								oncomplete="myschedule.update();eventDialog.hide();"
-								update=":acordeon:panelTareas:tareas :acordeonPasadas:panelTareasPasadas:tareasPasadas" />
+								update=":acordeon:panelTareas:tareas" />
 						</h:panelGrid>
 					</p:dialog>
 
@@ -175,7 +180,7 @@
 							widgetVar="confirmation" appendToBody="true">
 
 							<p:commandButton id="confirm" value="Si, estoy seguro"
-								update="mesg, :acordeon:panelTareas:tareas :acordeonPasadas:panelTareasPasadas:tareasPasadas"
+								update="mesg, :acordeon:panelTareas:tareas"
 								oncomplete="confirmation.hide(), myschedule.update();"
 								process="@this"
 								actionListener="#{scheduleController.deleteEvent}" />
@@ -187,10 +192,9 @@
 					</h:form>
 
 				</h:form>
-			</p:column>
-		</p:row>
-	</p:panelGrid>
-</p:panel>
+			</div>
+		</p:layoutUnit>
+	</p:layout>
 	<style type="text/css">
 .ui-dataList .ui-paginator {
 	font-size: 80%;
@@ -204,39 +208,21 @@
 	border: none;
 }
 
-
-.pnlMain {
-	width:100%;
-}
-.fc-border-separate tr,.fc-border-separate td {
-	border-color: red;
-}
-
-.fc-header tr,.fc-header td {
+.ui-layout-unit {
+	padding-top: 0;
+	padding-bottom: -5;
+	padding-right: 0;
+	padding-left: 0;
 	border: none;
 }
 
-.clmnaMain {
-	vertical-align:text-top;
-	width:25%;
-	
-
-}
 .clmna {
-	
-}
-.calendarioMain {
-	width:75%;
-	border:none;
+	width: 90%;
 }
 
-td.clmnaMain {
-	border:none;
-}
-
-.pantel {
-	width:100%;
-	border:none;
+.classCalendar {
+	background-image: url('/resources/css/imagenes/calendar.png');
+	background-position: 0 0;
 }
 
 .btnCalendar {
@@ -249,7 +235,6 @@ td.clmnaMain {
 	border-width: 1px;
 	border-color: grey;
 }
-
 </style>
 	<SCRIPT type="text/javascript">
 		PrimeFaces.locales['es'] = {

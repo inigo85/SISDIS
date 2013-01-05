@@ -19,6 +19,16 @@ public class AdminEventoBean implements Serializable{
 	private List<Tarea> listaTareas;
 	private List<Usuario> listaUsuarios;
 	private Fachada fachada;
+	private String evento_id;
+
+
+	public String getEvento_id() {
+		return evento_id;
+	}
+
+	public void setEvento_id(String evento_id) {
+		this.evento_id = evento_id;
+	}
 
 	public AdminEventoBean() throws NamingException {
 		fachada = Fachada.getInstance();
