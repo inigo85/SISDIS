@@ -30,7 +30,7 @@ public class Fachada {
 
 	private Fachada() throws NamingException {
 		Context contextoInicial = new InitialContext();
-		ds = (DataSource) contextoInicial.lookup("jdbc/sisdis");
+		ds = (DataSource) contextoInicial.lookup("java:/comp/env/jdbc/sisdis");
 	}
 
 	public static Fachada getInstance() throws NamingException {
