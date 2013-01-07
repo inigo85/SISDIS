@@ -29,6 +29,10 @@
 				<param-value>redmond</param-value>
     </context-param>
 
+    <listener>
+ <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+ </listener>
+    
     <!-- Faces Servlet -->
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
@@ -40,9 +44,22 @@
        <servlet-name>Faces Servlet</servlet-name>
        <url-pattern>/faces/*</url-pattern>
    </servlet-mapping>
+   
+   <servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.faces</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
 
    <welcome-file-list>
-     <welcome-file>faces/main.xhtml</welcome-file>
+     <welcome-file>faces/login.xhtml</welcome-file>
    </welcome-file-list>
    
 <error-page>
