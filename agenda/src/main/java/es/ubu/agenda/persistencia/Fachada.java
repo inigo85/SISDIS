@@ -30,9 +30,9 @@ public class Fachada {
 	private Fachada() throws NamingException {
 		Context contextoInicial = new InitialContext();
 		//para ejecutar en Tomcat
-		//ds = (DataSource) contextoInicial.lookup("java:/comp/env/jdbc/sisdis");
+		ds = (DataSource) contextoInicial.lookup("java:/comp/env/jdbc/sisdis");
 		//para ejecutar en GlassFish
-		ds = (DataSource) contextoInicial.lookup("jdbc/sisdis");
+		//ds = (DataSource) contextoInicial.lookup("jdbc/sisdis");
 	}
 
 	public static Fachada getInstance() throws NamingException {
