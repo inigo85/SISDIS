@@ -102,8 +102,8 @@
 					<p:column colspan="2">
 						<p:commandButton value="Guardar" type="submit"
 							action="#{registroBean.registrarUsuario}" update="pnlGrid" />
-						<p:commandButton value="Cancelar" type="reset"
-							style="margin-left:3%" />
+						<p:commandButton value="Cancelar" immediate="true"
+							style="margin-left:3%" action="#{registroBean.volverAlLogin}" />
 					</p:column>
 				</p:row>
 			</p:panelGrid>

@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.ContextException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
@@ -21,7 +20,7 @@ import es.ubu.agenda.beans.UserBean;
 import es.ubu.agenda.modelo.Tarea;
 import es.ubu.agenda.modelo.Usuario;
 
-import javax.servlet.http.HttpServletRequest;
+
 
 public class Fachada {
 
@@ -30,7 +29,10 @@ public class Fachada {
 
 	private Fachada() throws NamingException {
 		Context contextoInicial = new InitialContext();
-		ds = (DataSource) contextoInicial.lookup("java:/comp/env/jdbc/sisdis");
+		//para ejecutar en Tomcat
+		//ds = (DataSource) contextoInicial.lookup("java:/comp/env/jdbc/sisdis");
+		//para ejecutar en GlassFish
+		ds = (DataSource) contextoInicial.lookup("jdbc/sisdis");
 	}
 
 	public static Fachada getInstance() throws NamingException {
@@ -73,7 +75,6 @@ public class Fachada {
 		ResultSet rs = null;
 		PreparedStatement st = null;
 		List<Tarea> listaTareas = null;
-		boolean ok = false;
 		try {
 			conn = ds.getConnection();
 			listaTareas=new ArrayList<Tarea>();
@@ -135,7 +136,6 @@ public class Fachada {
 		PreparedStatement st = null;
 		List<Tarea> listaTareas = null;
 		String operador=">=";
-		boolean ok = false;
 		try {
 			conn = ds.getConnection();
 			listaTareas=new ArrayList<Tarea>();
@@ -168,7 +168,6 @@ public class Fachada {
 		ResultSet rs = null, rs2=null;
 		PreparedStatement st = null;
 		List<Tarea> listaTareas = null;
-		boolean ok = false;
 		try {
 			conn = ds.getConnection();
 			listaTareas=new ArrayList<Tarea>();
@@ -408,7 +407,7 @@ public class Fachada {
 	
 	public int obtenerIdUsuario(){
 		ExternalContext tmpEC;
-	    Map sMap;
+	    Map<?, ?> sMap;
 	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
 	    sMap = tmpEC.getSessionMap();
 	    UserBean user = (UserBean) sMap.get("UserBean");

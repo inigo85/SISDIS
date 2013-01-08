@@ -135,10 +135,11 @@
 
 					<p:dialog widgetVar="eventDialog" header="Detalles del evento"
 						showEffect="clip" hideEffect="clip">
+						<p:messages id="detallesEvento" autoUpdate="true" closable="true"/>
 						<h:panelGrid id="eventDetails" columns="2">
 							<h:outputLabel for="nombre" value="Nombre:" />
-							<p:inputText id="nombre"
-								value="#{scheduleController.event.title}" required="true" />
+							<p:inputText id="nombre" 
+								value="#{scheduleController.event.title}" required="true" requiredMessage="Campo Nombre es necesario" />
 
 							<h:outputLabel for="desde" value="Desde:" />
 							<p:calendar id="desde" effect="slideDown"
@@ -156,13 +157,13 @@
 							<h:outputLabel for="allDay" value="Todo el día" />
 							<h:selectBooleanCheckbox id="allDay"
 								value="#{scheduleController.event.allDay}" />
+							<p:commandButton value="Guardar"
+								actionListener="#{scheduleController.addEvent}"
+								update=":acordeon:panelTareas:tareas :acordeonPasadas:panelTareasPasadas:tareasPasadas" />
 							<p:commandButton value="Eliminar"
 								oncomplete="myschedule.update();eventDialog.hide();"
 								onclick="confirmation.show()" />
-							<p:commandButton value="Guardar"
-								actionListener="#{scheduleController.addEvent}"
-								oncomplete="myschedule.update();eventDialog.hide();"
-								update=":acordeon:panelTareas:tareas" />
+							
 						</h:panelGrid>
 					</p:dialog>
 

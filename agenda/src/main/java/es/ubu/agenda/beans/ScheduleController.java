@@ -3,7 +3,6 @@ package es.ubu.agenda.beans;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,13 +15,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.naming.NamingException;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.ScheduleEntrySelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
+
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
@@ -31,6 +31,12 @@ import es.ubu.agenda.persistencia.Fachada;
 
 @ManagedBean
 public class ScheduleController implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5133150658694289644L;
+
 
 	private ScheduleModel eventModel;
 	
@@ -66,7 +72,6 @@ public class ScheduleController implements Serializable{
 
 	private Fachada fachada;
 	
-	private Tarea tareaAntigua;
 	
 	public ScheduleModel getEventModel() {
 		return eventModel;
@@ -76,11 +81,10 @@ public class ScheduleController implements Serializable{
 		this.eventModel = eventModel;
 	}
 
-	private ScheduleModel lazyEventModel;
+	
 
 	private ScheduleEvent event = new DefaultScheduleEvent();
 	
-	private ScheduleEvent oldEvent = new DefaultScheduleEvent();
 	
 	public ScheduleEvent getEvent() {
 		return event;
@@ -90,7 +94,6 @@ public class ScheduleController implements Serializable{
 		this.event = event;
 	}
 
-	private String theme;
 	
 	private String descripción;
 
@@ -102,6 +105,7 @@ public class ScheduleController implements Serializable{
 	public void setDescripción(String descripción) {
 		this.descripción = descripción;
 	}
+
 
 	public ScheduleController() throws NamingException {
 		eventModel = new DefaultScheduleModel() ;
@@ -119,15 +123,14 @@ public class ScheduleController implements Serializable{
 		}
 
 		
-		lazyEventModel = new LazyScheduleModel() {
-			
-			public void fetchEvents(Date start, Date end) {
-				clear();
-			}	
-		};
 	}
 	
 	public void addEvent(ActionEvent actionEvent) throws NamingException {
+		if(event.getStartDate().compareTo(event.getEndDate())>0){
+			FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_ERROR, "Desde es posterior a Hasta", null);
+		    FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
 		if(event.getId() == null){
 			String eventoId;
 			eventModel.addEvent(event);
@@ -135,25 +138,25 @@ public class ScheduleController implements Serializable{
 			Tarea t = obtenerTarea(event);
 			t.setIdUsuario(String.valueOf(fachada.obtenerIdUsuario()));
 			eventoId=fachada.insertarTarea(t);
-			event.setId(eventoId);
-			actualizarListaTareas();
+			event.setId(eventoId);	
 		}
 		else
 		{
 			eventModel.updateEvent(event);
 			fachada=Fachada.getInstance();
 			Tarea t = obtenerTarea(event);
-			//Tarea t2 = obtenerTarea(oldEvent);
 			fachada.actualizarTarea(t, event.getId());
-			actualizarListaTareas();
 		}
+		actualizarListaTareas();
+		RequestContext.getCurrentInstance().execute("eventDialog.hide();myschedule.update();");
+		//oncomplete="myschedule.update();"
 		event = new DefaultScheduleEvent();
 		this.setDescripción("");
 	}
 
 	private void actualizarListaTareas() throws NamingException {
 		ExternalContext tmpEC;
-		Map sMap;
+		Map<?, ?> sMap;
 		tmpEC = FacesContext.getCurrentInstance().getExternalContext();
 		sMap = tmpEC.getSessionMap();
 		TableBean tb = (TableBean) sMap.get("tableBean");
@@ -182,7 +185,6 @@ public class ScheduleController implements Serializable{
 	public void onEventSelect(ScheduleEntrySelectEvent selectEvent) {
 		descripción="";
 		event = selectEvent.getScheduleEvent();
-		tareaAntigua = obtenerTarea(event);
 		descripción=fachada.obtenerDescripcion(event.getId());
 	}
 	

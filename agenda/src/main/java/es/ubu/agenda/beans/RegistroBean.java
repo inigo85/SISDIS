@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.ManagedBean;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 
-import org.primefaces.context.RequestContext;
 
 import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
@@ -18,6 +16,10 @@ import es.ubu.agenda.persistencia.Fachada;
 @ManagedBean
 public class RegistroBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5739077395948794055L;
 	private String nombre;
 	private String contraseña;
 	private String email;
@@ -51,17 +53,22 @@ public class RegistroBean implements Serializable{
 		fachada=Fachada.getInstance();
 		fachada.insertarUsuario(usuario);
 		mostrarMensaje();
-		return "loginPage";
+		return "login.xhtml?faces-redirect=true";
 	}
 	
 	
 	private void mostrarMensaje() {
 		ExternalContext tmpEC;
-	    Map sMap;
+	    Map<?, ?> sMap;
 	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
 	    sMap = tmpEC.getSessionMap();
 	    UserBean user = (UserBean) sMap.get("UserBean");
 	    user.mostrarMensaje();
+	    
+	}
+	
+	public String volverAlLogin(){
+		return "login.xhtml?faces-redirect=true";
 	}
 	
 }

@@ -35,7 +35,6 @@ public class Tarea {
 	private Date fecha_inicio;
 	private Date fecha_fin;
 	private boolean todo_el_día;
-	private String lugar;
 	
 	private String fecha_formateada;
 	

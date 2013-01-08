@@ -1,7 +1,6 @@
 package es.ubu.agenda.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -18,6 +17,10 @@ import es.ubu.agenda.modelo.Tarea;
 @ManagedBean
 public class TableBean implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8997868904134418756L;
 	private Tarea tareaSeleccionada;
 	
 	public Tarea getTareaSeleccionada() {
@@ -27,7 +30,7 @@ public class TableBean implements Serializable{
 	public void setTareaSeleccionada(Tarea tareaSeleccionada) {
 		this.tareaSeleccionada = tareaSeleccionada;
 		ExternalContext tmpEC;
-	    Map sMap;
+	    Map<?, ?> sMap;
 	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
 	    sMap = tmpEC.getSessionMap();
 	    ScheduleController schedule = (ScheduleController) sMap.get("scheduleController");

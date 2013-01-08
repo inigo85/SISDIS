@@ -5,7 +5,12 @@ import java.io.Serializable;
 
 public class Theme implements Serializable {
     
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8627191995465253748L;
+
+	private String name;
     
     private String image;
     

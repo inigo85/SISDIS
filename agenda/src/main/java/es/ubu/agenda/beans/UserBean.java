@@ -1,7 +1,6 @@
 package es.ubu.agenda.beans;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -9,9 +8,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
-
-import org.primefaces.context.RequestContext;
-
 import es.ubu.agenda.modelo.Usuario;
 import es.ubu.agenda.persistencia.Fachada;
 
@@ -22,6 +18,12 @@ import es.ubu.agenda.persistencia.Fachada;
 @ManagedBean
 @SessionScoped
 public class UserBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2662757956069613054L;
+
 
 	/**
 	 * Login user.
@@ -116,6 +118,8 @@ public class UserBean implements Serializable{
 		if(usuario!=null){
 		  setId(Integer.valueOf(usuario.getId()));
 		  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", getId());
+		  FacesContext context = FacesContext.getCurrentInstance();
+		  context.getExternalContext().getFlash().setKeepMessages(false);
 		  if(usuario.getTipo()=='A' || usuario.getTipo()=='a')
 			return "admin.xhtml?faces-redirect=true";
 		  else
@@ -130,6 +134,8 @@ public class UserBean implements Serializable{
 	public void mostrarMensaje(){
 		FacesMessage msg=new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario registrado correctamente en el sistema", null);
 	    FacesContext.getCurrentInstance().addMessage(null, msg);
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    context.getExternalContext().getFlash().setKeepMessages(true);
 	}
 	
 	public String logout() {

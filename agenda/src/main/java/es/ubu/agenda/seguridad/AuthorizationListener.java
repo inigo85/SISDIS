@@ -10,6 +10,11 @@ import javax.servlet.http.HttpSession;
 
 public class AuthorizationListener implements PhaseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1638894759654306628L;
+
 	public void afterPhase(PhaseEvent event) {
 
 		FacesContext facesContext = event.getFacesContext();

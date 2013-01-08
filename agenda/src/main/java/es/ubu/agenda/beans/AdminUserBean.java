@@ -17,6 +17,10 @@ import es.ubu.agenda.persistencia.Fachada;
 
 @ManagedBean
 public class AdminUserBean implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9109630369006996807L;
 	private List<Usuario> listaUsuarios;
 	private List<Usuario> listaFiltrada;
 	private Fachada fachada;
@@ -85,7 +89,7 @@ public class AdminUserBean implements Serializable{
 	
 	public String desconectar(){
 		ExternalContext tmpEC;
-	    Map sMap;
+	    Map<?, ?> sMap;
 	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
 	    sMap = tmpEC.getSessionMap();
 	    UserBean user = (UserBean) sMap.get("UserBean");

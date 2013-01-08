@@ -4,9 +4,13 @@ package es.ubu.agenda.beans;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.primefaces.event.DateSelectEvent;
 
 public class CalendarBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5414309094711046653L;
 
 	private Date date1;
 	
