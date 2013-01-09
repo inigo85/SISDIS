@@ -119,7 +119,7 @@
 									styleClass="ui-icon ui-icon-trash"
 									actionListener="#{adminUserBean.setUsuario_id(usuario.id)}"
 									onclick="confirmationEve.show()">
-
+									
 								</p:commandLink>
 							</p:column>
 						</p:dataTable>
@@ -145,8 +145,8 @@
 							widgetVar="confirmationEve" appendToBody="true">
 
 							<p:commandButton id="confirm" value="Si, estoy seguro"
-								update="mesgEve, :tabView:form:user"
-								oncomplete="confirmationEve.hide()"
+								update="mesgEve, :tabView:form:user, :tabView:formEvento:eve"
+								oncomplete="confirmationEve.hide();"
 								process="@this"
 								actionListener="#{adminUserBean.onDelete(adminUserBean.getUsuario_id())}"
 								 />
