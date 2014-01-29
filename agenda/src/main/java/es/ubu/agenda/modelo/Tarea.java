@@ -9,6 +9,8 @@ import javax.naming.NamingException;
 
 import es.ubu.agenda.persistencia.Fachada;
 
+/* Otro comentario */
+/* sdfsadf */
 public class Tarea {
 
 	private String id;
