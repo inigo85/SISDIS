@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.naming.NamingException;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 import es.ubu.agenda.modelo.Tarea;
@@ -69,12 +68,6 @@ public class AdminEventoBean implements Serializable{
 
 	public void onCancel(RowEditEvent event) {
 
-	}
-	
-	public void updateEvents() throws NamingException{
-		fachada = Fachada.getInstance();
-		listaTareas = fachada.obenerTareas();
-		listaUsuarios = fachada.obtenerListaUsuarios();
 	}
 
 	public void onDelete(String id) {

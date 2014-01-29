@@ -62,7 +62,7 @@ public class AdminUserBean implements Serializable{
 		
 	}
     
-    public void onDelete(String id) throws NamingException{
+    public void onDelete(String id){
 		fachada.eliminarUsuario(id);
 		int contador=0;
 		for(Usuario u:listaUsuarios){
@@ -71,12 +71,6 @@ public class AdminUserBean implements Serializable{
 			contador++;
 		}
 		listaUsuarios.remove(contador);
-		ExternalContext tmpEC;
-		Map<?, ?> sMap;
-	    tmpEC = FacesContext.getCurrentInstance().getExternalContext();
-	    sMap = tmpEC.getSessionMap();
-	    AdminEventoBean adminEvento = (AdminEventoBean) sMap.get("adminEventoBean");
-	    adminEvento.updateEvents();
     }
 
 	public List<Usuario> getListaFiltrada() {
