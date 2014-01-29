@@ -1,5 +1,6 @@
 package es.ubu.agenda.modelo;
 
+/* Comentario */
 public class Usuario {
 	
 	private String id;
